@@ -1,0 +1,180 @@
+﻿@model SMS.Models.UserComplexModel
+@{
+    ViewBag.Title = "User";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>User Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmUser">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="UserID" />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" name="UserName" class="form-control1" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Password</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input type="password" name="Password" class="form-control1" required placeholder="Password">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateUser" onclick="create('User','',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditUser" onclick="update('User','',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearUser"
+                                        onclick="clearForm('User');" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Employee</label>
+                                    <input type="hidden" id="hdnEmployeeID" name="EmployeeID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-users"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="EmployeeName" id="EmployeeName">Select Employee</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpEmployee" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Employee">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Employee" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Employees.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Employees[i].EmployeeName" data-id="@Model.Employees[i].EmployeeID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Employee',@Model.Employees[i].EmployeeID,'@Model.Employees[i].EmployeeName');">
+                                                                @Model.Employees[i].EmployeeName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Role</label>
+                                    <input type="hidden" id="hdnRoleID" name="RoleID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pull-right"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="RoleName" id="RoleName">Select Role</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpRole" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Role">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Role" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Roles.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Roles[i].RoleName" data-id="@Model.Roles[i].RoleID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Role',@Model.Roles[i].RoleID,'@Model.Roles[i].RoleName');">
+                                                                @Model.Roles[i].RoleName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="txtRemarks" name="Remarks" class="form-control" type="text" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Users Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblUser">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">User ID</th>
+                                    <th>User Name</th>
+                                    <th class="hidden">Employee ID</th>
+                                    <th>Employee Name</th>
+                                    <th>Role</th>
+                                    <th class="hidden">Password</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.User.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('User','','@Model.User[i].UserID','@Model.User[i].UserName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('User',this)">Edit</a> </td>
+                                            <td id="UserID" class="hidden">@Model.User[i].UserID</td>
+                                            <td id="UserName">@Model.User[i].UserName</td>
+                                            <td id="EmployeeID" class="hidden">@Model.User[i].EmployeeID</td>
+                                            <td id="EmployeeName">@Model.User[i].Employee.EmployeeName</td>
+                                            <td id="RoleID" class="hidden">@Model.User[i].RoleID</td>
+                                            <td id="RoleName">@Model.User[i].Role.RoleName</td>
+                                            <td id="Password" class="hidden">@Model.User[i].Password</td>
+                                            <td id="Remarks">@Model.User[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

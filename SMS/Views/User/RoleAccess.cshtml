@@ -1,0 +1,168 @@
+﻿@model SMS.Models.RoleAccessComplexModel
+@{
+    ViewBag.Title = "Role Access";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Role Access Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmInterface">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Role</label>
+                                    <input type="hidden" id="hdnRoleID" name="RoleID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="RoleName" id="RoleName">Select Role</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpRole" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Role">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Role" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Roles.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Roles[i].RoleName" data-id="@Model.Roles[i].RoleID">
+                                                            <a href="../User/RoleAccess?RoleID=@Model.Roles[i].RoleID" onclick="setItem('Role',@Model.Roles[i].RoleID,'@Model.Roles[i].RoleName');">
+                                                                @Model.Roles[i].RoleName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="col-lg-6">
+                                <input type="button" class="btn btn-success" id="btnRoleAccessCreate" value="Update" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Interfaces Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        @{ 
+                            var _allowAddID = 0;
+                            var _allowEditID = 0;
+                            var _allowDeleteID = 0;
+                            var _allowViewID = 0;
+                            var _allowReportID = 0;
+                        }
+                        <table class="table table-bordered table-striped" id="tblRoleAccess">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th class="hidden">Parent Interface ID</th>
+                                    <th>Parent Interface</th>
+                                    <th class="hidden">Interface ID</th>
+                                    <th>Interface Name</th>
+                                    <th>Allow Add</th>
+                                    <th>Allow Edit</th>
+                                    <th>Allow Delete</th>
+                                    <th>Allow View</th>
+                                    <th>Allow Report</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Interfaces.Count; i++)
+                                    {
+                                        <tr>
+                                            @*<td><a href="javascript:void(0);" onclick="deleteDialog('Role', '../User/InterfaceDelete','@Model.Interfaces[i].InterfaceID','@Model.Interfaces[i].InterfaceName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Interface',@i)">Edit</a> </td>*@
+                                            <td>@(i+1)</td>
+                                            
+                                            <td id="ParentInterfaceID" class="hidden">@Model.Interfaces[i].ParentInterfaceID</td>
+                                            <td id="InterfaceID" class="hidden">@Model.Interfaces[i].InterfaceID</td>
+                                           
+                                            @{
+
+                                                var _parentInterfaceName = "";
+                                                var _allowAdd = "";
+                                                var _allowEdit = "";
+                                                var _allowDelete = "";
+                                                var _allowView = "";
+                                                var _allowReport = "";
+                                                if (Model.Interfaces[i].ParentInterfaceID != null)
+                                                {
+                                                    _parentInterfaceName = Model.Interfaces[i].ParentInterface.InterfaceName;
+                                                }
+                                                <td id="ParentInterfaceName">@_parentInterfaceName</td>
+                                                <td id="InterfaceName">@Model.Interfaces[i].InterfaceName</td>
+                                                var _roleAccess = Model.RoleAccess.Where(x => x.InterfaceID == Model.Interfaces[i].InterfaceID);
+
+                                                _allowAddID = Model.EventAccess.FirstOrDefault(x => x.EventAccessName.ToLower().Contains("add")).EventAccessID;
+                                                _allowEditID = Model.EventAccess.FirstOrDefault(x => x.EventAccessName.ToLower().Contains("edit")).EventAccessID;
+                                                _allowDeleteID = Model.EventAccess.FirstOrDefault(x => x.EventAccessName.ToLower().Contains("delete")).EventAccessID;
+                                                _allowViewID = Model.EventAccess.FirstOrDefault(x => x.EventAccessName.ToLower().Contains("view")).EventAccessID;
+                                                _allowReportID = Model.EventAccess.FirstOrDefault(x => x.EventAccessName.ToLower().Contains("report")).EventAccessID;
+                                                if (_roleAccess != null)
+                                                {
+                                                    if (_roleAccess.Any(x => x.EventAccessID == _allowAddID))
+                                                    {
+                                                        _allowAdd = "checked='checked'";
+                                                    }
+                                                    if (_roleAccess.Any(x => x.EventAccessID == _allowEditID))
+                                                    {
+                                                        _allowEdit = "checked='checked'";
+                                                    }
+                                                    if (_roleAccess.Any(x => x.EventAccessID == _allowDeleteID))
+                                                    {
+                                                        _allowDelete = "checked='checked'";
+                                                    }
+                                                    if (_roleAccess.Any(x => x.EventAccessID == _allowViewID))
+                                                    {
+                                                        _allowView = "checked='checked'";
+                                                    }
+                                                    if (_roleAccess.Any(x => x.EventAccessID == _allowReportID))
+                                                    {
+                                                        _allowReport = "checked='checked'";
+                                                    }
+                                                }
+
+
+                                            }
+
+                                            <td id="AllowAdd"><input type="checkbox" @_allowAdd /> </td>
+                                            <td id="AllowEdit"><input type="checkbox" @_allowEdit /> </td>
+                                            <td id="AllowDelete"><input type="checkbox" @_allowDelete /> </td>
+                                            <td id="AllowView"><input type="checkbox" @_allowView /> </td>
+                                            <td id="AllowReport"><input type="checkbox" @_allowReport /> </td>
+                                        </tr>
+                                                    }
+                                                }
+                            </tbody>
+                        </table>
+                        <input type="hidden" id="AllowAddEventID" value="@_allowAddID" />
+                        <input type="hidden" id="AllowEditEventID" value="@_allowEditID" />
+                        <input type="hidden" id="AllowDeleteEventID" value="@_allowDeleteID" />
+                        <input type="hidden" id="AllowViewEventID" value="@_allowViewID" />
+                        <input type="hidden" id="AllowReportEventID" value="@_allowReportID" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

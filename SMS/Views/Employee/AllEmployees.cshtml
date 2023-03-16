@@ -1,0 +1,818 @@
+﻿@model SMS.Models.EmployeeComplexModel
+@{
+    ViewBag.Title = "Employees";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Employee Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmEmployee">
+                        <input type="hidden" name="EmployeeSkills" id="hdnEmployeeSkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EmployeeSkills))" />
+                        <input type="hidden" name="Skills" id="hdnSkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Skills))" />
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <input type="hidden" name="EmployeeID" />
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-plus"></i>
+                                            </span>
+                                            @{
+                                                var _employeeID = 0;
+                                                var _count = Model.Employees.Count;
+                                                if (_count > 0)
+                                                {
+                                                    _employeeID = Model.Employees[_count - 1].EmployeeID + 1;
+                                                }
+                                                <input disabled type="text" class="form-control1" name="EmployeeID" placeholder="EmployeeID" value="@_employeeID">
+                                            }
+                                            
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="EmployeeName" placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Department</label>
+                                    <input type="hidden" id="hdnDepartmentID" name="DepartmentID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-subscript"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="DepartmentName" id="DepartmentName">Select Department</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpDepartment" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Department">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Department" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Departments.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Departments[i].DepartmentName" data-id="@Model.Departments[i].DepartmentID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Department',@Model.Departments[i].DepartmentID,'@Model.Departments[i].DepartmentName');">
+                                                                @Model.Departments[i].DepartmentName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Shift</label>
+                                    <input type="hidden" id="hdnShiftID" name="ShiftID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-shield"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="ShiftName" id="ShiftName">Select Shift</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpShift" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Shift">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Shift" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Shifts.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Shifts[i].ShiftName" data-id="@Model.Shifts[i].ShiftID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Shift',@Model.Shifts[i].ShiftID,'@Model.Shifts[i].ShiftName');">
+                                                                @Model.Shifts[i].ShiftName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                    <label class="col-md-3 control-label">Nationality</label>
+                                    <input type="hidden" id="hdnNationalityID" name="NationalityID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-area-chart"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="NationalityName" id="NationalityName">Select Nationality</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpNationality" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Nationality">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Nationality" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Nationalities.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Nationalities[i].NationalityName" data-id="@Model.Nationalities[i].NationalityID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Nationality',@Model.Nationalities[i].NationalityID,'@Model.Nationalities[i].NationalityName');">
+                                                                @Model.Nationalities[i].NationalityName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Bank</label>
+                                    <input type="hidden" id="hdnBankID" name="BankID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="BankName" id="BankName">Select Bank</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpBank" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Bank">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Bank" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Banks.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Banks[i].BankName" data-id="@Model.Banks[i].BankID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Bank',@Model.Banks[i].BankID,'@Model.Banks[i].BankName');">
+                                                                @Model.Banks[i].BankName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Acount Type</label>
+                                    <input type="hidden" id="hdnBankAccountTypeID" name="BankAccountTypeID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-scribd"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="BankAccountTypeName" id="BankAccountTypeName">Select Acount Type</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpBankAccountType" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Acount Type">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Account Type" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.BankAccountTypes.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.BankAccountTypes[i].BankAccountTypeName" data-id="@Model.BankAccountTypes[i].BankAccountTypeID">
+                                                            <a href="javascript:void(0)" onclick="setItem('BankAccountType',@Model.BankAccountTypes[i].BankAccountTypeID,'@Model.BankAccountTypes[i].BankAccountTypeName');">
+                                                                @Model.BankAccountTypes[i].BankAccountTypeName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Qualification</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-university"></i>
+                                            </span>
+                                            <input required class="form-control1" type="text" name="QualificationDescription" placeholder="Qualification">
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">DOB</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-birthday-cake"></i>
+                                            </span>
+                                            <input required class="form-control1" type="date" name="DOB" format="dd/MM/yyyy" placeholder="DOB" max="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">ActualDOB</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-birthday-cake"></i>
+                                            </span>
+                                            <input required class="form-control1" type="date" format="dd/MM/yyyy" name="ActualDOB" placeholder="ActualDOB" max="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Address</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea required id="txtAddress" class="form-control" name="Address" placeholder="Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateEmployee" onclick="createEmployee();" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditEmployee" onclick="update('Employee','',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearEmployee"
+                                       onclick="clearForm('Employee')" value="Clear" />
+                            </div>
+                            <div class="col-lg-4">
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Joining Date</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input required type="date" class="form-control1" format="dd/MM/yyyy" name="JoiningDate" placeholder="JoiningDate" max="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Designation</label>
+                                    <input type="hidden" id="hdnDesignationID" name="DesignationID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-product-hunt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="DesignationName" id="DesignationName">Select Designation</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpDesignation" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Designation">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Designation" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Designations.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Designations[i].DesignationName" data-id="@Model.Designations[i].DesignationID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Designation',@Model.Designations[i].DesignationID,'@Model.Designations[i].DesignationName');">
+                                                                @Model.Designations[i].DesignationName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Status</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-times"></i>
+                                            </span>
+                                            <select class="form-control selectpicker" name="Status" id="drpStatus" data-live-search="true">
+                                                <option data-tokens="select-designation" value="0">Select Status</option>
+                                                <option data-tokens="Active" value="Active" selected="selected">Active</option>
+                                                <option data-tokens="InActive" value="InActive">InActive</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Country</label>
+                                    <input type="hidden" id="hdnCountryID" name="CountryID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-area-chart"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default  border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="CountryName" id="CountryName">Select Country</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpCountry" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Country">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Country" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Countries.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Countries[i].CountryName" data-id="@Model.Countries[i].CountryID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Country',@Model.Countries[i].CountryID,'@Model.Countries[i].CountryName');">
+                                                                @Model.Countries[i].CountryName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Contact Person Name</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input required class="form-control1" type="text" name="ContactPersonName" placeholder="Contact Person Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group margin-0">
+                                    <label class="col-md-3 control-label" style="padding:0px;">Contact Person Relationship</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mail-reply"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="ContactPersonRelationship" placeholder="Contact Person Relationship">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Phone No</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input required id="PhoneNumber" class="form-control1" type="text" name="PhoneNumber" placeholder="Phone No">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Mobile No</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input required class="form-control1" type="text" name="MobileNumber" placeholder="MobileNumber">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Medical History</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea required class="form-control" name="MedicalHistory" placeholder="Medical History"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Company</label>
+                                    <input type="hidden" id="hdnCompanyID" name="CompanyID" />
+                                    <div class="col-lg-8 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-dashboard"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="CompanyName" id="CompanyName">Select Company</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpCompany" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Company">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Company" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Companies.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Companies[i].CompanyName" data-id="@Model.Companies[i].CompanyID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Company',@Model.Companies[i].CompanyID,'@Model.Companies[i].CompanyName');">
+                                                                @Model.Companies[i].CompanyName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Photo</label>
+                                    <div class="col-sm-8 padding-right-0 text-center">
+                                        <div class="input-group">
+                                            <input type="file" class="form-control input-sm is-image" id="filePhoto" accept="image/*" onchange="_utility.imagePreview(this, 'imgEmployee', 'txtPhotoPath')" />
+                                        </div>
+                                         <img id="imgEmployee" name="imgEmployee" src="~/Content/Images/placeholder-pic.png" alt="Employee Photo" />
+                                        <input type="hidden" name="PhotoPath" id="txtPhotoPath" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Account No</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-sort-numeric-asc"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="AccountNumber" placeholder="AccountNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Gender</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div id="gender" class="btn-group" data-toggle="buttons">
+                                            <input type="hidden" id="hdnGender" name="gender" value="male" />
+                                            @*<input type="hidden" name="Gender" />*@
+                                            <label class="btn btn-primary gender" id="lblmale" onclick="setGender('male')">
+                                                <input type="radio" value="male" > &nbsp; Male &nbsp;
+                                            </label>
+                                            <label class="btn btn-default gender" id="lblfemale" onclick="setGender('female')">
+                                                <input type="radio" value="female"> Female
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Email</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-inbox"></i>
+                                            </span>
+                                            <input required type="email" class="form-control1" name="Email" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Int.Cntct No</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="InternationalContactNumber" placeholder="Int Contact No">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Fmly Cnt No</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input class="form-control1" type="text" name="FamilyContactNumber" placeholder="FamilyContactNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Remarks</label>
+                                    <div class="col-sm-8 padding-right-0">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="txtRemarks" class="form-control" name="Remarks" placeholder="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-1 padding-0 control-label">Skill</label>
+                                    <div class="col-lg-11">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-shopping-bag"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                    <span id="SkillName">Select Skill</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12 multiple" id="drpSkill" role="menu" aria-labelledby="dropdownMenu1">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Skill" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Skills.Count; i++)
+                                                    {
+                                                        //var _checked = "";
+                                                        //if (Model.EmployeeSkills != null)
+                                                        //{
+                                                        //    if (Model.EmployeeSkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                                        //    {
+                                                        //        _checked = "checked='checked'";
+                                                        //    }
+                                                        //}
+                                                        <li data-name="@Model.Skills[i].SkillName" data-id="@Model.Skills[i].SkillID">
+                                                            <a href="javascript:void(0)" onclick="toggleItem('hdnEmployeeSkills', 'Skill', this,@Model.Skills[i].SkillID,'@Model.Skills[i].SkillName', event); event.preventDefault()">
+                                                                <div class="icheckbox_flat-blue checkbox-container">
+                                                                    <input type="checkbox" class="flat">
+                                                                    <span class="checkmark"></span>
+                                                                </div>
+                                                                @Model.Skills[i].SkillName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 text-center tag-list padding-left-0">
+                                <strong class="text-center text-info">Skills</strong>
+                                <hr />
+                                <ul id="lstSkill" class="tags">
+                                    @*@for (int i = 0; i < Model.Skills.Count; i++)
+                                    {
+                                        if (Model.EmployeeSkills != null)
+                                        {
+                                            if (Model.EmployeeSkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                            {
+                                                <li data-id="@Model.Skills[i].SkillID"><span onclick="removeItemFromList('hdnEmployeeSkills','Skill',@Model.Skills[i].SkillID)">X</span>@Model.Skills[i].SkillName</li>
+                                            }
+                                        }
+                                    }*@
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Employees Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 table-responsive">
+                        <table id="tblEmployee" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Employee Name</th>
+                                    <th>Status</th>
+                                    <th class="hidden">ShiftID</th>
+                                    <th>Shift</th>
+                                    <th class="hidden">DepartmentID</th>
+                                    <th>Department</th>
+                                    <th class="hidden">DesignationID</th>
+                                    <th>Designation</th>
+                                    <th class="hidden">CompanyID</th>
+                                    <th>Company</th>
+                                    <th>Qualification</th>
+                                    <th>Mobile No</th>
+                                    <th>Email</th>
+                                    <th>DOB</th>
+                                    <th>Actual DOB</th>
+                                    <th>Joining Date</th>
+                                    <th class="hidden">DOB</th>
+                                    <th class="hidden">Actual DOB</th>
+                                    <th class="hidden">Joining Date</th>
+                                    <th>Bank</th>
+                                    <th class="hidden">AccountTypeID</th>
+                                    <th>Account Type</th>
+                                    <th>Account No</th>
+                                    <th>Gender</th>
+                                    <th>Phone No</th>
+                                    <th>Contact Person Name</th>
+                                    <th>Contact Person Relationship</th>
+                                    <th>International Contact No</th>
+                                    <th>Family Contact No</th>
+                                    <th>Address</th>
+                                    <th>Medical History</th>
+                                    <th class="hidden">CountryID</th>
+                                    <th>Country</th>
+                                    @*<th class="hidden">NationalityID</th>
+                                    <th>Nationality</th>*@
+                                    <th>Remarks</th>
+                                    <th class="hidden">Remarks</th>
+                                    <th class="hidden">Remarks</th>
+                                    <th class="hidden">Remarks</th>
+                                    <th class="hidden">Remarks</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Employees.Count; i++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <a href="javascript:void(0);" onclick="deleteDialog('Employee','','@Model.Employees[i].EmployeeID','@Model.Employees[i].EmployeeName')" class="btn btn-sm btn-danger">Delete</a>
+                                                <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Employee',this);setGender('@Model.Employees[i].Gender');setSkill(@Model.Employees[i].EmployeeID)">Edit</a>
+                                            </td>
+                                            <td class="hidden" id="EmployeeID">@Model.Employees[i].EmployeeID</td>
+                                            <td id="EmployeeName">@Model.Employees[i].EmployeeName</td>
+                                            <td id="Status">@Model.Employees[i].Status</td>
+                                            <td class="hidden" id="ShiftID">@Model.Employees[i].ShiftID</td>
+                                            <td id="ShiftName">@Model.Employees[i].Shift.ShiftName</td>
+                                            <td class="hidden" id="DepartmentID">@Model.Employees[i].DepartmentID</td>
+                                            <td id="DepartmentName">@Model.Employees[i].Department.DepartmentName</td>
+                                            <td class="hidden" id="DesignationID">@Model.Employees[i].DesignationID</td>
+                                            <td id="DesignationName">@Model.Employees[i].Designation.DesignationName</td>
+                                            <td class="hidden" id="CompanyID">@Model.Employees[i].CompanyID</td>
+                                            <td id="CompanyName">@Model.Employees[i].Company.CompanyName</td>
+                                            <td id="QualificationDescription">@Model.Employees[i].QualificationDescription</td>
+                                            <td id="MobileNumber">@Model.Employees[i].MobileNumber</td>
+                                            <td id="Email">@Model.Employees[i].Email</td>
+                                            <td>@Model.Employees[i].DOB.ToString("dd/MM/yyyy")</td>
+                                            <td>@Model.Employees[i].ActualDOB.ToString("dd/MM/yyyy")</td>
+                                            <td>@Model.Employees[i].JoiningDate.ToString("dd/MM/yyyy")</td>
+                                            <td class="hidden" id="DOB">@Model.Employees[i].DOB.ToString("yyyy-MM-dd")</td>
+                                            <td class="hidden" id="ActualDOB">@Model.Employees[i].ActualDOB.ToString("yyyy-MM-dd")</td>
+                                            <td class="hidden" id="JoiningDate">@Model.Employees[i].JoiningDate.ToString("yyyy-MM-dd")</td>
+                                            <td class="hidden" id="BankID">@Model.Employees[i].BankID</td>
+                                            <td id="BankName">@Model.Employees[i].Bank.BankName</td>
+                                            <td class="hidden" id="BankAccountTypeID">@Model.Employees[i].BankAccountTypeID</td>
+                                            <td id="BankAccountTypeName">@Model.Employees[i].BankAccountType.BankAccountTypeName</td>
+                                            <td id="AccountNumber">@Model.Employees[i].AccountNumber</td>
+                                            <td id="Gender">@Model.Employees[i].Gender</td>
+                                            <td id="PhoneNumber">@Model.Employees[i].PhoneNumber</td>
+                                            <td id="ContactPersonName">@Model.Employees[i].ContactPersonName</td>
+                                            <td id="ContactPersonRelationship">@Model.Employees[i].ContactPersonRelationship</td>
+                                            <td id="InternationalContactNumber">@Model.Employees[i].InternationalContactNumber</td>
+                                            <td id="FamilyContactNumber">@Model.Employees[i].FamilyContactNumber</td>
+                                            <td id="Address">@Model.Employees[i].Address</td>
+                                            <td id="MedicalHistory">@Model.Employees[i].MedicalHistory</td>
+                                            <td class="hidden" id="CountryID">@Model.Employees[i].CountryID</td>
+                                            <td id="CountryName">@Model.Employees[i].Country.CountryName</td>
+                                            @*<td class="hidden" id="NationalityID">@Model.Employees[i].NationalityID</td>
+    <td id="NationalityName">@Model.Employees[i].Nationality.NationalityName</td>*@
+                                            <td id="Remarks">@Model.Employees[i].Remarks</td>
+                                            @{
+                                                var _photoPath = "";
+                                                if (Model.Employees[i].PhotoPath != null)
+                                                {
+                                                    if (Model.Employees[i].PhotoPath.Contains("base64"))
+                                                    {
+                                                        _photoPath = Model.Employees[i].PhotoPath;
+                                                    }
+                                                    else
+                                                    {
+                                                        _photoPath = "../Content/Images/EmployeeImages/" + Model.Employees[i].PhotoPath;
+                                                    }
+                                                }
+                                                <td class="hidden" id="imgEmployee">@_photoPath</td>
+                                                <td class="hidden" id="EmployeeSkills">@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EmployeeSkills.Where(x => x.EmployeeID == Model.Employees[i].EmployeeID).ToList()))</td>
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function setSkill(employeeID) {
+        var _array = new Array();
+        var _skills = new Array();
+        $('#lstSkill li').remove();
+        $('#drpSkill input[type="checkbox"]').prop('checked',false);
+        if ($('#hdnEmployeeSkills').val() != '' && $('#hdnEmployeeSkills').val() != 'null') {
+            _array = JSON.parse($('#hdnEmployeeSkills').val());
+        }
+        if ($('#hdnSkills').val() != '' && $('#hdnSkills').val() != 'null') {
+            _skills = JSON.parse($('#hdnSkills').val());
+        }
+        for (var i = 0; i < _array.length; i++) {
+            if (_array[i].EmployeeID == employeeID) {
+                var _skill = _skills.filter(s=>s.SkillID == _array[i].SkillID);
+                var removeFunction = 'removeItemFromList("hdnEmployeeSkills","Skill",' + _array[i].SkillID + ')';
+                $('#lstSkill').append("<li data-id=" + _array[i].SkillID + "><span onclick='" + removeFunction + "'>X</span>" + _skill[0].SkillName + "</li>");
+                $('#drpSkill li[data-id="' + _array[i].SkillID + '"]').find('input[type="checkbox"]').prop('checked', true);
+            }
+        }
+    }
+    function checkLists() {
+        if ($('#lstSkill li').length == 0) {
+            _utility.showNotification('Warning', 'warning', "Skill is not selected");
+            return false;
+        }
+        return true;
+    }
+    function createEmployee() {
+        if (checkLists()) {
+            create('Employee', '', true);
+        }
+    }
+    function updateEmployee() {
+        if (checkLists()) {
+            update('Employee', '', true);
+        }
+    }
+</script>
+

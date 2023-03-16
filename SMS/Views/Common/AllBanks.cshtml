@@ -1,0 +1,227 @@
+﻿@model SMS.Models.BankComplexModel
+@{
+    ViewBag.Title = "Bank";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Bank Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmBank">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="BankID" />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-briefcase"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="BankName" placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Branch Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-braille"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="BranchName" placeholder="Branch Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Contact person</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="ContactPerson" required placeholder="Contact Person">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Contact No</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="ContactNumber" placeholder="Contact Number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateBank" onclick="create('Bank','Common/BankCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditBank" onclick="update('Bank','Common/BankEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearBank"
+                                       onclick="clearForm('Bank')" value="Clear" />
+                            </div>
+                          
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Location</label>
+                                    <input type="hidden" id="hdnLocationID" name="LocationID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-location-arrow"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="LocationName" id="LocationName">Select Location</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpLocation" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Location">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Location" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Locations.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Locations[i].LocationName" data-id="@Model.Locations[i].LocationID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Location',@Model.Locations[i].LocationID,'@Model.Locations[i].LocationName');">
+                                                                @Model.Locations[i].LocationName
+                                                            </a>
+                                                        </li>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Country</label>
+                                    <input type="hidden" id="hdnCountryID" name="CountryID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-area-chart"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="CountryName" id="CountryName">Select Country</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpCountry" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Country">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Country" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Countries.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Countries[i].CountryName" data-id="@Model.Countries[i].CountryID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Country',@Model.Countries[i].CountryID,'@Model.Countries[i].CountryName');">
+                                                                @Model.Countries[i].CountryName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Address</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea required id="" class="form-control" type="text" placeholder="Address" name="Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Banks Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblBank">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Bank ID</th>
+                                    <th>Bank Name</th>
+                                    <th>Branch Name</th>
+                                    <th>Contact Person</th>
+                                    <th>Contact Number</th>
+                                    <th class="hidden">Location ID</th>
+                                    <th>Location</th>
+                                    <th>Address</th>
+                                    <th class="hidden">Country ID</th>
+                                    <th>Country</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Banks.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Bank','../Common/BankDelete','@Model.Banks[i].BankID','@Model.Banks[i].BankName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Bank',this)">Edit</a> </td>
+                                            <td id="BankID" class="hidden">@Model.Banks[i].BankID</td>
+                                            <td id="BankName">@Model.Banks[i].BankName</td>
+                                            <td id="BranchName">@Model.Banks[i].BranchName</td>
+                                            <td id="ContactPerson">@Model.Banks[i].ContactPerson</td>
+                                            <td id="ContactNumber">@Model.Banks[i].ContactNumber</td>
+                                            <td id="LocationID" class="hidden">@Model.Banks[i].Location.LocationID</td>
+                                            <td id="LocationName">@Model.Banks[i].Location.LocationName</td>
+                                            <td id="Address">@Model.Banks[i].Address</td>
+                                            <td id="CountryID" class="hidden">@Model.Banks[i].Country.CountryID</td>
+                                            <td id="CountryName">@Model.Banks[i].Country.CountryName</td>
+                                            
+                                            <td id="Remarks">@Model.Banks[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

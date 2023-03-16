@@ -1,0 +1,87 @@
+﻿@model List<SMS.DataContext.Entities.Role>
+@{
+    ViewBag.Title = "Role";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Role Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmRole">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="RoleID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="RoleName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateRole" onclick="create('Role')" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditRole" onclick="update('Role')" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearFunctionType"
+                                       onclick="clearForm('Role')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Roles Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblRole">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Role ID</th>
+                                    <th>Role Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Role','','@Model[i].RoleID','@Model[i].RoleName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Role',@i)">Edit</a> </td>
+                                            <td id="RoleID" class="hidden">@Model[i].RoleID</td>
+                                            <td id="RoleName">@Model[i].RoleName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

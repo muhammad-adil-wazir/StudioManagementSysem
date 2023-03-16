@@ -1,0 +1,55 @@
+﻿@model List<SMS.DataContext.Entities.EnquiryType>
+@{
+    ViewBag.Title = "Enquiry Type";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Enquiry Type Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    @Html.Partial("~/Views/Shared/_EnquiryType.cshtml", Model)
+                </div>
+                <div class="form-title">
+                    <h4>Enquiry Types Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblEnquiryType">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Enquiry Type ID</th>
+                                    <th>Enquiry Type Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('EnquiryType','../Enquiry/EnquiryTypeDelete','@Model[i].EnquiryTypeID','@Model[i].EnquiryTypeName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('EnquiryType',this)">Edit</a> </td>               
+                                            <td id="EnquiryTypeID" class="hidden">@Model[i].EnquiryTypeID </td>
+                                            <td id="EnquiryTypeName">@Model[i].EnquiryTypeName </td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+

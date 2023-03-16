@@ -1,0 +1,43 @@
+﻿
+@*@{ 
+    Layout = null;
+}*@
+<style>
+    .cbp-spmenu-push div#page-wrapper {margin:0px;}
+    .cbp-spmenu{display:none;}
+    .sticky-header {display:none;}
+</style>
+<div id="page-wrapper" style="min-height: 272px;">
+
+    <div class="main-page login-page ">
+        <h2 class="title1">Login</h2>
+        <div class="widget-shadow">
+            <div class="login-body">
+                <form action="Login" method="post">
+                    <input type="text" class="user" name="UserName" placeholder="Enter User Name" required>
+                    <input type="password" name="password" class="lock" placeholder="Password" required>
+                    @*<div class="forgot-grid">
+                            <label class="checkbox"><input type="checkbox" name="checkbox" checked=""><i></i>Remember me</label>
+                            <div class="forgot">
+                                <a href="#">forgot password?</a>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>*@
+                    <input type="submit" id="btnLogin" name="Sign In" value="Sign In">
+                    <br />
+                    @if (TempData["Error"] != null)
+                    {
+                        <p class="text-danger">@TempData["Error"]</p>
+                    }
+                    @*<div class="registration">
+                            Don't have an account ?
+                            <a class="" href="signup.html">
+                                Create an account
+                            </a>
+                        </div>*@
+                </form>
+            </div>
+        </div>
+
+    </div>
+        </div>

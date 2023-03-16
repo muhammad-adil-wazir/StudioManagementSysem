@@ -1,0 +1,36 @@
+﻿@model List<SMS.DataContext.Entities.EnquiryType>
+<form class="form-horizontal" id="frmEnquiryType">
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="hidden" name="EnquiryTypeID" />
+            <div class="form-group">
+                <label class="col-md-2 control-label">Name</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-square"></i>
+                        </span>
+                        <input required type="text" class="form-control1" name="EnquiryTypeName" placeholder="Name">
+                    </div>
+                </div>
+            </div>
+                    <input type="button" class="btn btn-success" id="btnCreateEnquiryType" onclick="create('EnquiryType', 'Enquiry/EnquiryTypeCreate', true)" value="Create" />
+            <input type="button" class="btn btn-primary hidden" id="btnEditEnquiryType" onclick="update('EnquiryType', 'Enquiry/EnquiryTypeEdit',true)" value="Update" />
+            <input type="button" class="btn btn-info" id="btnClearEnquiryType"
+                   onclick="clearForm('EnquiryType')" value="Clear" />
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Remarks</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <textarea  class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

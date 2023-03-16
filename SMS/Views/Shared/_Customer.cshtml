@@ -1,0 +1,160 @@
+﻿@model SMS.Models.CustomerComplexModel
+<form id="frmCustomer" class="form-horizontal" method="POST" action="Create">
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="hidden" name="CustomerID" class="form-control1">
+            <div class="form-group">
+                <label class="col-md-4 control-label">Name</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-user"></i>
+                        </span>
+                        <input type="text" name="CustomerName" class="form-control1" required placeholder="Name">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Country</label>
+                <input type="hidden" id="hdnCountryID" name="CountryID" />
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-area-chart"></i>
+                        </span>
+                        <div class="dropdown dropdown-scroll">
+                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                <span name="CountryName" id="CountryName">Select Country</span>
+                                <span class="float-right">
+                                    <span class="caret"></span>
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu col-lg-12" id="drpCountry" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Country">
+                                <li role="presentation">
+                                    <div class="input-group input-group-sm search-control">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Country" />
+                                    </div>
+                                </li>
+                                @for (int i = 0; i < Model.Countries.Count; i++)
+                                {
+
+                                    <li data-name="@Model.Countries[i].CountryName" data-id="@Model.Countries[i].CountryID">
+                                        <a href="javascript:void(0)" onclick="setItem('Country',@Model.Countries[i].CountryID,'@Model.Countries[i].CountryName');">
+                                            @Model.Countries[i].CountryName
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Phone Number</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-phone"></i>
+                        </span>
+                        <input type="tel" class="form-control1" id="exampleInputPassword1" name="PhoneNumber" placeholder="Phone Number">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label">Mobile Number</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-mobile"></i>
+                        </span>
+                        <input required class="form-control1" type="text" placeholder="Mobile Number" name="MobileNumber">
+                    </div>
+                </div>
+            </div>
+                    <input type="button" class="btn btn-success" id="btnCreateCustomer" onclick="create('Customer','',true)" value="Create" />
+            <input type="button" class="btn btn-primary hidden" id="btnEditCustomer" onclick="update('Customer','',true)" value="Update" />
+            <input type="button" class="btn btn-info" id="btnClearCustomer"
+                   onclick="clearForm('Customer');" value="Clear" />
+            @*<input type="submit" class="hidden " id="btnCreateCusto
+                @*<input type="submit" class="hidden " id="btnCreateCustomerHidden" value="Create" />*@
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-md-3 control-label">Email</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-inbox"></i>
+                        </span>
+                        <input type="email" class="form-control1" placeholder="Email" name="Email">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Location</label>
+                <input type="hidden" id="hdnLocationID" name="LocationID" />
+                <div class="col-lg-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-location-arrow"></i>
+                        </span>
+                        <div class="dropdown dropdown-scroll">
+
+                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                <span name="LocationName" id="LocationName">Select Location</span>
+                                <span class="float-right">
+                                    <span class="caret"></span>
+                                </span>
+                            </button>
+                            <ul class="dropdown-menu col-lg-12" id="drpLocation" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Location">
+                                <li role="presentation">
+                                    <div class="input-group input-group-sm search-control">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-search"></span>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="Location" />
+                                    </div>
+                                </li>
+                                @for (int i = 0; i < Model.Locations.Count; i++)
+                                {
+
+                                    <li data-name="@Model.Locations[i].LocationName" data-id="@Model.Locations[i].LocationID">
+                                        <a href="javascript:void(0)" onclick="setItem('Location',@Model.Locations[i].LocationID,'@Model.Locations[i].LocationName');">
+                                            @Model.Locations[i].LocationName
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Address</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-area-chart"></i>
+                        </span>
+                        <textarea class="form-control" placeholder="Address" name="Address"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">Remarks</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <textarea class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

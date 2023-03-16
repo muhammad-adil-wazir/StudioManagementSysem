@@ -1,0 +1,54 @@
+﻿@model List<SMS.DataContext.Entities.Skill>
+@{
+    ViewBag.Title = "Skill";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Skill Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                  @Html.Partial("~/Views/Shared/_Skill.cshtml", Model)
+                </div>
+                <div class="form-title">
+                    <h4>Skills Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblSkill">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Skill ID</th>
+                                    <th>Skill Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Skill','','@Model[i].SkillID','@Model[i].SkillName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Skill',this)">Edit</a> </td>               
+                                            <td id="SkillID" class="hidden">@Model[i].SkillID</td>
+                                            <td id="SkillName">@Model[i].SkillName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

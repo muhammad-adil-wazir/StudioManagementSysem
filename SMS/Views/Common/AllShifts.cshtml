@@ -1,0 +1,178 @@
+﻿@model List<SMS.DataContext.Entities.Shift>
+@{
+    ViewBag.Title = "Shift";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Shift Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmShift">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="ShiftID" />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-shield"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="ShiftName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Start Time</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="StartTime" required placeholder="Start Time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">End Time</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="EndTime" required placeholder="End Time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Total Time</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle""></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="TotalTime" required placeholder="Total Time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateShift" onclick="create('Shift','Common/ShiftCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditShift" onclick="update('Shift','Common/ShiftEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearShift"
+                                       onclick="clearForm('Shift')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Break Start Time</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="BreakStartTime" required placeholder="Break Start Time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Break End Time</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="BreakEndTime" required placeholder="Break End Time">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Total Break Time</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="TotalBreakHours" required placeholder="Total Break Hours">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Total Working Hours</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input type="time" class="form-control1" name="TotalWorkingHours" required placeholder="Total Working Hours">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Remarks</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Shifts Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblShift">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Shift ID</th>
+                                    <th>Shift Name</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Break Start Time</th>
+                                    <th>Break End Time</th>
+                                    <th>Total Time</th>
+                                    <th>Total Break Hours</th>
+                                    <th>Total Working Hours</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Shift','../Common/ShiftDelete','@Model[i].ShiftID','@Model[i].ShiftName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Shift',this)">Edit</a> </td>
+                                            <td id="ShiftID" class="hidden">@Model[i].ShiftID</td>
+                                            <td id="ShiftName">@Model[i].ShiftName</td>
+                                            <td id="StartTime">@Model[i].StartTime.ToString("hh':'mm")</td>
+                                            <td id="EndTime">@Model[i].EndTime.ToString("hh':'mm")</td>
+                                            <td id="BreakStartTime">@Model[i].BreakStartTime.ToString("hh':'mm")</td>
+                                            <td id="BreakEndTime">@Model[i].BreakEndTime.ToString("hh':'mm")</td>
+                                            <td id="TotalTime">@Model[i].TotalTime.ToString("hh':'mm")</td>
+                                            <td id="TotalBreakHours">@Model[i].TotalBreakHours.ToString("hh':'mm")</td>
+                                            <td id="TotalWorkingHours">@Model[i].TotalWorkingHours.ToString("hh':'mm")</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

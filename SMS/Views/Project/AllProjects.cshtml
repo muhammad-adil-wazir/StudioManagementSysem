@@ -1,0 +1,1956 @@
+﻿﻿@model SMS.Models.ProjectComplexModel
+@{
+    ViewBag.Title = "Project";
+}
+<style>
+    .dropdown-menu { padding: 0px !important;margin: 0px !important;}
+    #btnClearSkill, #btnCreateSkill, #btnClearDevice, #btnCreateDevice {display: none;}
+</style>
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Project Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmProject">
+                        <div class="row margin-0">
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Enquiry</label>
+                                    <input type="hidden" id="hdnEnquiryID" name="EnquiryID" value="@Model.Project.EnquiryID" />
+                                    <div class="col-lg-10">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-question"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button style="text-overflow: ellipsis;" class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    @{
+                                                        var _selectedEnquiryName = "Select Enquiry";
+                                                        if (Model.Project.Enquiry != null)
+                                                        {
+                                                            _selectedEnquiryName = "#" + Model.Project.Enquiry.EnquiryID + " - " + Model.Project.Enquiry.Customer.CustomerName + " - " + Model.Project.Enquiry.EnquiryDate.ToString("dd/MM/yyyy") + " - " + Model.Project.Enquiry.Remarks;
+                                                        }
+                                                        <span id="EnquiryName">@_selectedEnquiryName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpEnquiry" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Enquiry">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Enquiry" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Enquiries.Count; i++)
+                                                    {
+                                                        var _enquiryName = "#" + Model.Enquiries[i].EnquiryID + " - " + Model.Enquiries[i].Customer.CustomerName + " - " + Model.Enquiries[i].EnquiryDate.ToString("dd/MM/yyyy") + " - " + Model.Enquiries[i].Remarks;
+                                                        <li data-name="@_enquiryName" data-id="@Model.Enquiries[i].EnquiryID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Enquiry',@Model.Enquiries[i].EnquiryID,'@_enquiryName');getEnquiryData(@Model.Enquiries[i].EnquiryID)">
+                                                                @_enquiryName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group margin-0">
+                                    <label class="col-md-5 control-label padding-left-0 padding-right-0">Hours Required</label>
+                                    <div class="col-md-5 padding-left-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input required type="text" class="form-control" placeholder="Hours Required" name="HoursRequired" value="@Model.Project.HoursRequired" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row margin-0">
+                            <div class="col-lg-6">
+                                <input type="hidden" id="hdnPreviousFiles" value="@Model.Project.FilesPath" />
+                                <input type="hidden" id="txtProjectID" name="ProjectID" value="@Model.Project.ProjectID" />
+                                <input type="hidden" name="ProjectDevices" id="hdnProjectDevices" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProjectDevices))" />
+                                @*<input type="hidden" name="ProjectJobs" id="hdnProjectJobs" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProjectJobs))" />*@
+                                <input type="hidden" name="ProjectSkills" id="hdnProjectSkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProjectSkills))" />
+                                <input type="hidden" name="EmployeeSkills" id="hdnEmployeeSkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EmployeeSkills))" />
+                                <input type="hidden" name="ProjectEmployees" id="hdnProjectEmployees" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ProjectEmployees))" />
+                                @*<div class="form-group">
+                                        <label class="col-md-3 control-label">Project Id</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar-times-o"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Project Id">
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label padding-left-0">Project Number</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-sort-amount-asc"></i>
+                                            </span>
+                                            <input disabled type="text" class="form-control" placeholder="Project Number" value="@Model.Project.ProjectID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Start Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                            <input type="date" onchange="dateChange()" class="form-control" placeholder="Start Date" name="ProjectStartDate" id="txtProjectStartDate" value="@Model.Project.ProjectStartDate.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Project Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input required type="text" class="form-control" placeholder="Project Name" name="ProjectName" value="@Model.Project.ProjectName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Project Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar-times-o"></i>
+                                            </span>
+                                            <input required type="date" class="form-control" id="txtProjectDate" name="ProjectDate" placeholder="Project Date" value="@Model.Project.ProjectDate.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Project Time</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input required type="time" class="form-control" placeholder="Project Time" name="ProjectTime" value="@Model.Project.ProjectTime.ToString("hh':'mm")">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Venue</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input required type="text" class="form-control" id="txtVenue" placeholder="Venue" name="Venue" value="@Model.Project.Venue">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Participant 1</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input required type="text" class="form-control" placeholder="Participant 1" name="ParticipantOne" value="@Model.Project.ParticipantOne">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Participant 2</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Participant 2" name="ParticipantTwo" value="@Model.Project.ParticipantTwo">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Project Status</label>
+                                    <input type="hidden" id="hdnProjectStatusID" name="ProjectStatusID" value="@Model.Project.ProjectStatusID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    @{
+                                                        var _projectStatusName = "Select Project Status";
+                                                        if (Model.Project.ProjectStatus != null)
+                                                        {
+                                                            _projectStatusName = Model.Project.ProjectStatus.ProjectStatusName;
+                                                        }
+                                                        <span id="ProjectStatusName">@_projectStatusName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpProjectStatus" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Project Status">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Project Status" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.ProjectStatus.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.ProjectStatus[i].ProjectStatusName" data-id="@Model.ProjectStatus[i].ProjectStatusID">
+                                                            <a href="javascript:void(0)" onclick="setItem('ProjectStatus',@Model.ProjectStatus[i].ProjectStatusID,'@Model.ProjectStatus[i].ProjectStatusName');">
+                                                                @Model.ProjectStatus[i].ProjectStatusName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Function Type</label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-futbol-o"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <input type="hidden" id="hdnFunctionTypeID" name="FunctionTypeID" value="@Model.Project.FunctionTypeID" />
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                    @{
+                                                        var _functionTypeName = "Select Function Type";
+                                                        if (Model.Project.FunctionType != null)
+                                                        {
+                                                            _functionTypeName = Model.Project.FunctionType.FunctionTypeName;
+                                                        }
+                                                        <span id="FunctionTypeName">@_functionTypeName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpFunctionType" role="menu" aria-labelledby="dropdownMenu1">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Enquiry Type" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.FunctionTypes.Count; i++)
+                                                    {
+                                                        //var _checked = "";
+                                                        //if (Model.ProjectJobs != null)
+                                                        //{
+                                                        //    if (Model.ProjectFunctionTypes.Any(x => x.FunctionTypeID == Model.FunctionTypes[i].FunctionTypeID))
+                                                        //    {
+                                                        //        _checked = "checked='checked'";
+                                                        //    }
+                                                        //}
+                                                        <li data-name="@Model.FunctionTypes[i].FunctionTypeName" data-id="@Model.FunctionTypes[i].FunctionTypeID">
+                                                            <a href="javascript:void(0)" onclick="setItem('FunctionType',@Model.FunctionTypes[i].FunctionTypeID,'@Model.FunctionTypes[i].FunctionTypeName');">
+                                                                @Model.FunctionTypes[i].FunctionTypeName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Contract Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Contract Name" name="ContractName" value="@Model.Project.ContractName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Contract No</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input type="text" class="form-control" placeholder="Contract Number" name="ContractNumber" value="@Model.Project.ContractNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </div>
+                            <div class="col-lg-6 padding-left-0">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Attachments</label>
+                                    <div class="col-sm-8 text-center">
+                                        <input multiple type="file" class="form-control input-sm is-image" id="files" onchange="loadFiles(this)" />
+                                        <input type="hidden" name="FileNames" id="txtFileNames" />
+                                        <input type="hidden" name="FilesPath" id="txtFilesPath" />
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">End Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar-minus-o"></i>
+                                            </span>
+                                            <input type="date" class="form-control" onchange="dateChange()" placeholder="End Date" name="ProjectEndDate" id="txtProjectEndDate" value="@Model.Project.ProjectEndDate.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                        <label class="col-md-3 control-label">Chargeable Cost</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-repeat"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="ChargeableCost" name="ChargeableCost" value="@Model.Project.ChargeableCost">
+                                            </div>
+                                        </div>
+                                    </div>*@
+                               
+                                <div class="row margin-0">
+                                    <div class="col-lg-8 padding-left-0 padding-right-0">
+                                        <div class="form-group hidden">
+                                            <label class="col-md-5 control-label">Min Cost</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="costchange()" id="txtMinCost" class="form-control" placeholder="Min Cost" name="ActualCost" value="@Model.Project.ActualCost">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group hidden">
+                                            <label class="col-md-5 control-label ">Max Cost</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0 ">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="costchange()" id="txtMaxCost" class="form-control" placeholder="Max Cost" name="MaxCost" value="@Model.Project.MaxCost">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label padding-left-0">Chargeable Amount</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="calculateTotal()" id="txtChargeableCost" class="form-control" placeholder="Chargeable Amount" name="ChargeableAmount" value="@Model.Project.ChargeableAmount">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Discount</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-level-down"></i>
+                                                    </span>
+                                                    <input onchange="calculateTotal()" type="number" id="txtDiscount" class="form-control" placeholder="Discount" name="Discount" value="@Model.Project.Discount">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">VAT</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-level-down"></i>
+                                                    </span>
+                                                    <input onchange="calculateTotal()" type="number" id="txtVat" class="form-control" placeholder="Discount" name="Vat" value="@Model.Project.Vat">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Final Cost</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" disabled id="txtFinalCost" class="form-control" placeholder="Final Cost" name="TotalCost" value="@Model.Project.TotalCost">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*<div class="form-group">
+                                                <label class="col-md-3 control-label">No Of Units</label>
+                                                <div class="col-md-8">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <i class="fa fa-indent"></i>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="No Of Units" name="NoOfUnits" value="@Model.Project.NoOfUnits">
+                                                    </div>
+                                                </div>
+                                            </div>*@
+
+                                    </div>
+                                    <div class="col-lg-4 tag-container padding-left-0">
+                                        <div class="col-lg-11 padding-left-0 text-center tag-list">
+                                            <strong class="text-center text-info">Previous Files</strong>
+                                            <hr />
+                                            <ul id="lstFiles" class="tags" style="max-height: 185px;">
+                                                @{
+                                                    if (Model.Project.FilesPath != "" && Model.Project.FilesPath != null)
+                                                    {
+                                                        var _files = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>>(Model.Project.FilesPath);
+                                                        for (int i = 0; i < _files.Count; i++)
+                                                        {
+                                                            <li><a style="color:black;" href="javascript:void(0);" onclick="window.open('../Content/Documents/Project/@_files[i]','_blank')"> @_files[i]</a></li>
+                                                        }
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row margin-0">
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Payment 1</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="paymentchange()" id="txtPayment1" class="form-control padding-5" placeholder="Payment 1" name="Payment1" value="@Model.Project.Payment1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Payment 2</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="paymentchange()" id="txtPayment2" class="form-control padding-5" placeholder="Payment 2" name="Payment2" value="@Model.Project.Payment2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Payment 3</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="paymentchange()" id="txtPayment3" class="form-control padding-5" placeholder="Payment 3" name="Payment3" value="@Model.Project.Payment3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-5 control-label">Payment 4</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-money"></i>
+                                                    </span>
+                                                    <input type="number" onchange="paymentchange()" id="txtPayment4" class="form-control padding-5" placeholder="Payment 4" name="Payment4" value="@Model.Project.Payment4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 padding-left-0">
+                                        @{ 
+                                            var _paymentDate1 = "";
+                                            var _paymentDate2 = "";
+                                            var _paymentDate3 = "";
+                                            var _paymentDate4 = "";
+                                            if(Model.Project.PaymentDate1 != null)
+                                            {
+                                                _paymentDate1 = Convert.ToDateTime(Model.Project.PaymentDate1).ToString("yyyy-MM-dd");
+                                            }
+                                            if (Model.Project.PaymentDate2 != null)
+                                            {
+                                                _paymentDate2 = Convert.ToDateTime(Model.Project.PaymentDate2).ToString("yyyy-MM-dd");
+                                            }
+                                            if (Model.Project.PaymentDate3 != null)
+                                            {
+                                                _paymentDate3 = Convert.ToDateTime(Model.Project.PaymentDate3).ToString("yyyy-MM-dd");
+                                            }
+                                            if (Model.Project.PaymentDate4 != null)
+                                            {
+                                                _paymentDate4 = Convert.ToDateTime(Model.Project.PaymentDate4).ToString("yyyy-MM-dd");
+                                            }
+                                        }
+                                        <div class="form-group">
+                                            <label class="col-md-3 padding-left-0 control-label">Date 1</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-times-o"></i>
+                                                    </span>
+
+                                                    <input type="date" id="txtPaymentDate1" class="form-control padding-5" placeholder="Payment 1" name="PaymentDate1" value="@_paymentDate1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 padding-left-0 control-label">Date 2</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-times-o"></i>
+                                                    </span>
+                                                    <input type="date" id="txtPaymentDate2" class="form-control padding-5" placeholder="Payment 2" name="PaymentDate2" value="@_paymentDate2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 padding-left-0 control-label">Date 3</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-times-o"></i>
+                                                    </span>
+                                                    <input type="date" id="txtPaymentDate3" class="form-control padding-5" placeholder="Payment 3" name="PaymentDate3" value="@_paymentDate3">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-3 padding-left-0 control-label">Date 4</label>
+                                            <div class="col-md-6 padding-left-0 padding-right-0">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-calendar-times-o"></i>
+                                                    </span>
+                                                    <input type="date" id="txtPaymentDate4" class="form-control padding-5" placeholder="Payment 4" name="PaymentDate4" value="@_paymentDate4">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Balance</label>
+                                    <div class="col-md-8 ">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <input type="number" disabled id="txtBalance" class="form-control" placeholder="Balance" name="Balance" value="@Model.Project.TotalCost">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="txtRemarks" class="form-control" type="text" placeholder="Remarks" name="Remarks">@Model.Project.Remarks</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <hr />
+                    </form>
+                    <div class="row">
+                        @*<div class="col-lg-7 hidden">
+                            <div class="row margin-0">
+                                <div class="col-lg-5"><label class="control-label">Employee</label></div>
+                                <div class="col-lg-3"><label class="control-label">From Date</label></div>
+                                <div class="col-lg-3"><label class="control-label">To Date</label></div>
+                            </div>
+                            <div class="row margin-0" id="frmProjectEmployee">
+                                <div class="col-lg-5 padding-left-0 padding-right-0">
+                                    <div class="form-group">
+                                        <div class="col-lg-12">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-user-plus"></i>
+                                                </span>
+                                                <div class="dropdown dropdown-scroll">
+
+                                                    <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                        <span id="EmployeeName">Select Employee</span>
+                                                        <span class="float-right">
+                                                            <span class="caret"></span>
+                                                        </span>
+                                                    </button>
+                                                    <input type="hidden" id="hdnEmployeeID" />
+                                                    <ul class="dropdown-menu col-lg-12" id="drpEmployee" role="menu" aria-labelledby="dropdownMenu1">
+                                                        <li role="presentation">
+                                                            <div class="input-group input-group-sm search-control">
+                                                                <span class="input-group-addon">
+                                                                    <span class="glyphicon glyphicon-search"></span>
+                                                                </span>
+                                                                <input type="text" class="form-control" placeholder="Employee" />
+                                                            </div>
+                                                        </li>
+                                                        @for (int i = 0; i < Model.Employees.Count; i++)
+                                                        {
+                                                            <li data-name="@Model.Employees[i].EmployeeName" data-id="@Model.Employees[i].EmployeeID">
+                                                                <a href="javascript:void(0)" onclick="setItem('Employee',@Model.Employees[i].EmployeeID,'@Model.Employees[i].EmployeeName', event); event.preventDefault()">
+                                                                    @Model.Employees[i].EmployeeName
+                                                                </a>
+                                                            </li>
+                                                        }
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-lg-3 padding-left-0">
+                                    <div class="input-group">
+                                        <input style="width: 155px;" required class="form-control" type="date" id="" placeholder="From Date" onchange="checkEmployeeFromDate(this)" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 padding-left-0">
+                                    <div class="input-group">
+                                        <input style="width: 155px;" required class="form-control" type="date" id="" placeholder="To Date" onchange="checkEmployeeToDate(this)" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-1">
+                                    <input type="button" class="btn btn-success btn-sm" id="btnAddEmployee" value="Add"
+                                           onclick="checkEmployeeAvailability('tblProjectSkill', $('#txtProjectStartDate').val(), $('#txtProjectEndDate').val());" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row margin-0">
+                                <div class="col-lg-12 padding-right-0 padding-left-0" style="max-height:200px;overflow:auto;">
+                                    <strong class="text-info">Employees</strong>
+
+                                    <table class="table table-bordered non-datatable" id="tblProjectEmployee">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>Employee Name</th>
+                                                <th>From Date</th>
+                                                <th>To Date</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @for (int i = 0; i < Model.Employees.Count; i++)
+                                            {
+                                                if (Model.ProjectEmployees != null)
+                                                {
+                                                    var _projectEmployee = Model.ProjectEmployees.FirstOrDefault(x => x.EmployeeID == Model.Employees[i].EmployeeID);
+                                                    if (_projectEmployee != null)
+                                                    {
+                                                        <tr data-id="@Model.Employees[i].EmployeeID" data-employeename="@Model.Employees[i].EmployeeName"
+                                                            data-employeeid="@Model.Employees[i].EmployeeID" data-fromdate="@_projectEmployee.FromDate" data-todate="@_projectEmployee.ToDate">
+                                                            <td><input type="button" class="btn btn-sm btn-danger" value="Delete" onclick="deleteDialog('Employee','../Project/ProjectEmployeeDelete','@_projectEmployee.ProjectEmpDetailID','@Model.Employees[i].EmployeeName');$('#tblProjectEmployee tbody tr[data-id=@Model.Employees[i].EmployeeID]').remove();" /></td>
+                                                            <td>@Model.Employees[i].EmployeeName</td>
+                                                            <td>@_projectEmployee.FromDate.ToString("dd/MM/yyyy")</td>
+                                                            <td>@_projectEmployee.ToDate.ToString("dd/MM/yyyy")</td>
+                                                        </tr>
+                                                    }
+                                                    <li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>*@
+                        <div class="col-lg-5">
+                            <div class="row tag-container margin-0 hidden">
+
+                                <div class="col-lg-6 text-center tag-list padding-left-0">
+                                    <strong class="text-center text-info">Skills</strong>
+                                    <hr />
+                                    <ul id="lstSkill" class="tags">
+                                        @*@for (int i = 0; i < Model.Skills.Count; i++)
+                                        {
+                                            if (Model.ProjectSkills != null)
+                                            {
+                                                if (Model.ProjectSkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                                {
+                                                    <li data-id="@Model.Skills[i].SkillID"><span onclick="removeItemFromList('hdnProjectSkills','Skill',@Model.Skills[i].SkillID)">X</span>@Model.Skills[i].SkillName</li>
+                                                }
+                                            }
+                                        }*@
+                                    </ul>
+                                </div>
+                                @*<div class="col-lg-3 padding-left-0 padding-right-0 text-center tag-list">
+                                        <strong class="text-center text-info">Jobs</strong>
+                                        <hr />
+                                        <ul id="lstJob" class="tags">
+                                            @for (int i = 0; i < Model.Jobs.Count; i++)
+                                            {
+                                                if (Model.ProjectJobs != null)
+                                                {
+                                                    if (Model.ProjectJobs.Any(x => x.JobID == Model.Jobs[i].JobID))
+                                                    {
+                                                        <li data-id="@Model.Jobs[i].JobID"><span onclick="removeItemFromList('hdnProjectJobs','Job',@Model.Jobs[i].JobID)">X</span>@Model.Jobs[i].JobName</li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    </div>*@
+                                <div class="col-lg-6 text-center tag-list padding-left-0 hidden">
+                                    <strong class="text-center text-info">Function Types</strong>
+                                    <hr />
+                                    <ul id="lstFunctionType" class="tags">
+                                        @*@for (int i = 0; i < Model.FunctionTypes.Count; i++)
+                                        {
+                                            if (Model.ProjectFunctionTypes != null)
+                                            {
+                                                if (Model.ProjectFunctionTypes.Any(x => x.FunctionTypeID == Model.FunctionTypes[i].FunctionTypeID))
+                                                {
+                                                    <li data-id="@Model.FunctionTypes[i].FunctionTypeID"><span onclick="removeItemFromList('hdnProjectFunctionTypes','FunctionType',@Model.FunctionTypes[i].FunctionTypeID)">X</span>@Model.FunctionTypes[i].FunctionTypeName</li>
+                                                }
+                                            }
+                                        }*@
+                                        @*<li> dfsdf <span>X</span></li>*@
+                                    </ul>
+                                </div>
+                                @*<div class="col-lg-4 text-center tag-list">
+                                        <strong class="text-center text-info">Employees</strong>
+                                        <hr />
+                                        <ul id="lstEmployee" class="tags">
+                                            @for (int i = 0; i < Model.Employees.Count; i++)
+                                            {
+                                                if (Model.ProjectEmployees != null)
+                                                {
+                                                    if (Model.ProjectEmployees.Any(x => x.EmployeeID == Model.Employees[i].EmployeeID))
+                                                    {
+                                                        <li data-id="@Model.Employees[i].EmployeeID"><span onclick="removeItemFromList('hdnProjectEmployees','Employee',@Model.Employees[i].EmployeeID)">X</span>@Model.Employees[i].EmployeeName</li>
+                                                    }
+                                                }
+                                            }
+                                        </ul>
+                                    </div>*@
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row margin-0">
+                        <div class="col-lg-3"><label class="control-label">Device</label></div>
+                        <div class="col-lg-2"><label class="control-label">From Date</label></div>
+                        <div class="col-lg-2"><label class="control-label">To Date</label></div>
+                        <div class="col-lg-1"><label class="control-label">Qunatity</label></div>
+                        <div class="col-lg-1"><label class="control-label">IsHired</label></div>
+                        <div class="col-lg-1 padding-0"><label class="control-label">Hired Cost</label></div>
+                    </div>
+                    <div class="row margin-0" id="frmProjectDevice">
+                        <div class="col-lg-3 padding-right-0">
+                            <div class="form-group">
+                                <div class="col-lg-12 padding-left-0 padding-right-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-desktop"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="DeviceName">Select Device</span>
+
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+
+                                            </button>
+                                            <input type="hidden" id="hdnDeviceID" />
+                                            <ul class="dropdown-menu col-lg-12" id="drpDevice" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Device" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Devices.Count; i++)
+                                                {
+                                                    //var _hired = "false";
+                                                    //var _hiredText = "";
+                                                    //if (Model.Devices[i].IsHired)
+                                                    //{
+                                                    //    _hired = "true";
+                                                    //    _hiredText = "- Hired";
+                                                    //}
+                                                    <li data-name="@Model.Devices[i].DeviceName" data-quantity="@Model.Devices[i].Quantity" data-id="@Model.Devices[i].DeviceID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Device',@Model.Devices[i].DeviceID,'@Model.Devices[i].DeviceName', event); event.preventDefault()">
+                                                            @Model.Devices[i].DeviceName
+                                                        </a>
+                                                    </li>
+                                                    //if (Model.ProjectDevices != null)
+                                                    //{
+                                                    //    var _projectDevice = Model.ProjectDevices.FirstOrDefault(x => x.DeviceID == Model.Devices[i].DeviceID);
+                                                    //    if (_projectDevice != null)
+                                                    //    {
+                                                    //        _fromDate = _projectDevice.FromDate.ToString("dd/MM/yyyy");
+                                                    //        _toDate = _projectDevice.ToDate.ToString("dd/MM/yyyy");
+                                                    //        _hiredCost = _projectDevice.HiredCost.ToString();
+                                                    //        _checked = "checked='checked'";
+                                                    //    }
+                                                    //}
+                                                    //if (Model.OnGoingProjectDevices != null)
+                                                    //{
+                                                    //    var _ongoingProjectDevices = Model.OnGoingProjectDevices.Where(x => x.DeviceID == Model.Devices[i].DeviceID);
+                                                    //    _quantity = Model.Devices[i].Quantity;
+
+                                                    //    if (_ongoingProjectDevices != null)
+                                                    //    {
+                                                    //        //var _copd = _ongoingProjectDevices.Where(x => x.DeviceID == Model.Devices[i].DeviceID);
+                                                    //        _quantity = _quantity - _ongoingProjectDevices.Select(x => x.Quantity).Sum();
+                                                    //    }
+                                                    //}
+                                                    @*<li data-quantity="@_quantity" data-name="@Model.Devices[i].DeviceName"
+                                                            data-id="@Model.Devices[i].DeviceID" data-fromdate="@_fromDate" data-todate="@_toDate"
+                                                            data-ishired="@_hired" data-hiredcost="@_hiredCost">
+                                                            <a href="javascript:void(0)" onclick="toggleRow('hdnProjectDevices', 'Device', this,@Model.Devices[i].DeviceID,'@Model.Devices[i].DeviceName', event); event.preventDefault()">
+                                                                <div class="icheckbox_flat-blue checkbox-container">
+                                                                    <input type="checkbox" @_checked class="flat">
+                                                                    <span class="checkmark"></span>
+                                                                </div>
+                                                                @Model.Devices[i].DeviceName (@_quantity) - @_hired
+                                                            </a>
+                                                        </li>*@
+                                                }
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtFromDate" placeholder="From Date" onchange="checkFromDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtToDate" placeholder="To Date" onchange="checkToDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <div class="input-group">
+                                <input required class="form-control" min="1" type="number" id="txtQuantity" placeholder="Quantity" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 ">
+                            <div class="input-group">
+                                <div class="icheckbox_flat-blue checkbox-container" style="padding:0px;">
+                                    <input type="checkbox" id="chkIsHiredDevice" class="flat" style="z-index:1111;width: 20px;
+    height: 18px;">
+                                    <span class="checkmark"></span>
+                                </div>
+                                @* <label>IsHired</label>*@
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-0">
+                            <div class="input-group">
+                                <input class="form-control hidden" type="number" id="txtHiredCost" placeholder="Hired Cost" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnAddDevice" value="Add"
+                                   onclick="checkDeviceAvailability()" />
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnNewDevice" value="New"
+                                   onclick="$('#mdlCreateDevice').modal('show');" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row margin-0">
+                        <div class="col-lg-12">
+                            <strong class="text-info">Devices</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblProjectDevice">
+                                <thead>
+                                    <tr>
+                                        <th id="DeviceID">Action</th>
+                                        <th id="DeviceName">Device Name</th>
+                                        <th id="FromDate">From Date</th>
+                                        <th id="ToDate">To Date</th>
+                                        <th id="IsHired">IsHired</th>
+                                        <th id="HiredCost">Hired Cost</th>
+                                        <th id="Quantity">Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Devices.Count; i++)
+                                    {
+                                        if (Model.ProjectDevices != null)
+                                        {
+                                            var _projectDevice = Model.ProjectDevices.FirstOrDefault(x => x.DeviceID == Model.Devices[i].DeviceID);
+                                            if (_projectDevice != null)
+                                            {
+                                                <tr data-id="@Model.Devices[i].DeviceID" data-devicename="@Model.Devices[i].DeviceName"
+                                                    data-deviceid="@Model.Devices[i].DeviceID" data-quantity="@_projectDevice.Quantity"
+                                                    data-hiredcost="@_projectDevice.HiredCost" data-ishired="@_projectDevice.IsHired"
+                                                    data-fromdate="@_projectDevice.FromDate.ToString("yyyy-MM-dd")" data-todate="@_projectDevice.ToDate.ToString("yyyy-MM-dd")">
+                                                    <td>
+                                                        <input type="button" class="btn btn-sm btn-danger" value="Delete"
+                                                               onclick="deleteDialog('Device','../Project/ProjectDeviceDelete','@_projectDevice.ProjectDeviceDetailID','@Model.Devices[i].DeviceName');$('#tblProjectDevice tbody tr[data-id=@Model.Devices[i].DeviceID]').remove();" />
+                                                    </td>
+                                                    <td>@Model.Devices[i].DeviceName</td>
+                                                    <td>@_projectDevice.FromDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@_projectDevice.ToDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@_projectDevice.IsHired</td>
+                                                    <td>@_projectDevice.HiredCost</td>
+                                                    <td>@_projectDevice.Quantity</td>
+
+                                                </tr>
+                                            }
+                                            @*<li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>*@
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                            @*<ul id="lstDevice" class="tags">
+                                    @for (int i = 0; i < Model.Devices.Count; i++)
+                                    {
+                                        if (Model.ProjectDevices != null)
+                                        {
+                                            if (Model.ProjectDevices.Any(x => x.DeviceID == Model.Devices[i].DeviceID))
+                                            {
+                                                <li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>
+                                            }
+                                        }
+                                    }
+                                </ul>*@
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row margin-0">
+                        <div class="col-lg-3"><label class="control-label">Skill</label></div>
+                        <div class="col-lg-3"><label class="control-label">Employee</label></div>
+                        <div class="col-lg-2"><label class="control-label">From Date</label></div>
+                        <div class="col-lg-2"><label class="control-label">To Date</label></div>
+                        <div class="col-lg-1"><label class="control-label">IsHired</label></div>
+                        <div class="col-lg-1 padding-0"><label class="control-label">Hired Cost</label></div>
+                    </div>
+                    <div class="row" id="frmProjectSkill">
+                        <div class="col-lg-3 padding-right-0">
+                            <div class="form-group">
+                                <div class="col-lg-12 padding-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-share-alt"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="SkillName">Select Skill</span>
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+
+                                            </button>
+                                            <input type="hidden" id="hdnSkillID" />
+                                            <ul class="dropdown-menu col-lg-12 multiple" id="drpSkill" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Skill" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Skills.Count; i++)
+                                                {
+                                                    //var _checked = "";
+                                                    ////var _ishired = "";
+                                                    //if (Model.EnquirySkills != null)
+                                                    //{
+                                                    //    if (Model.EnquirySkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                                    //    {
+                                                    //        _checked = "checked='checked'";
+                                                    //    }
+                                                    //}
+                                                    //if (Model.Skills[0].IsHired)
+                                                    //{
+                                                    //    _ishired = " - Hired";
+                                                    //}
+                                                    <li data-name="@Model.Skills[i].SkillName" data-id="@Model.Skills[i].SkillID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Skill',@Model.Skills[i].SkillID,'@Model.Skills[i].SkillName', event); event.preventDefault();filterEmployeeBySkillID(@Model.Skills[i].SkillID)">
+                                                            @*<div class="icheckbox_flat-blue checkbox-container">
+                                                    <input type="checkbox" @_checked class="flat">
+                                                    <span class="checkmark"></span>
+                                                </div>*@
+                                                            @Model.Skills[i].SkillName
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3  padding-0">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user-plus"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="EmployeeName">Select Employee</span>
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+                                            </button>
+                                            <input type="hidden" id="hdnEmployeeID" />
+                                            <ul class="dropdown-menu col-lg-12 not-required" id="drpEmployee" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Employee" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Employees.Count; i++)
+                                                {
+                                                    <li data-name="@Model.Employees[i].EmployeeName" data-id="@Model.Employees[i].EmployeeID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Employee',@Model.Employees[i].EmployeeID,'@Model.Employees[i].EmployeeName', event); event.preventDefault()">
+                                                            @Model.Employees[i].EmployeeName
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2 padding-0">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtEmployeeFromDate" placeholder="From Date" onchange="checkFromDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2 padding-0">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtEmployeeToDate" placeholder="To Date" onchange="checkToDate(this)" />
+                            </div>
+                        </div>
+                        @*<div class="col-lg-1 padding-0">
+                <div class="input-group">
+                    <input required class="form-control" type="number" id="txtQuantitySkill" placeholder="Quantity" />
+                </div>
+            </div>*@
+                        <div class="col-lg-1 padding-right-0">
+                            <div class="input-group">
+                                <div class="icheckbox_flat-blue checkbox-container" style="margin:0px;padding:0px;">
+                                    <input type="checkbox" onchange="isHiredChange(this)" id="chkIsHiredSkill" class="flat" style="z-index:1111;    width: 20px;
+    height: 18px;">
+                                    <span class="checkmark"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-0">
+                            <div class="input-group">
+                                <input class="form-control hidden" type="number" id="txtHiredCostSkill" placeholder="Hired Cost" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row margin-0">
+                        <div class="col-lg-4 hidden containr padding-0">
+                            <label class="col-md-5 control-label padding-right-0">Employee Name</label>
+                            <div class="col-lg-7">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="txtEmployeeName" placeholder="Employee Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 hidden containr padding-right-0">
+                            <label class="col-md-5 control-label padding-0">Company Name</label>
+                            <div class="col-lg-7">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="txtCompanyName" placeholder="Company Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnAddSkill" value="Add"
+                                   onclick="checkEmployeeAvailability('ProjectSkill', $('#txtProjectStartDate').val(), $('#txtProjectEndDate').val())" />
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnNewSkill" value="New"
+                                   onclick="$('#mdlCreateSkill').modal('show');" />
+                        </div>
+                    </div>
+                    <div class="row margin-0">
+                        <div class="col-lg-12">
+                            <strong class="text-info">Skills</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblProjectSkill">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th class="hidden">Skill ID</th>
+                                        <th>Skill Name</th>
+                                        <th class="hidden">Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th>To Date</th>
+                                        <th>From Date</th>
+                                        <th>IsHired</th>
+                                        <th>Hired Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Request.Url.ToString().ToLower().Contains("id"))
+                                        {
+                                            if (Model.ProjectEmployees != null)
+                                            {
+                                                for (int i = 0; i < Model.ProjectEmployees.Count; i++)
+                                                {
+                                                    var _projectEmployee = Model.Employees.FirstOrDefault(x => x.EmployeeID == Model.ProjectEmployees[i].EmployeeID);
+                                                    if (_projectEmployee == null)
+                                                    {
+                                                        _projectEmployee = new SMS.DataContext.Entities.Employee();
+                                                    }
+                                                    var _projectSkill = Model.Skills.FirstOrDefault(x => x.SkillID == Model.ProjectEmployees[i].SkillID);
+                                                    if (_projectSkill != null && _projectEmployee != null)
+                                                    {
+                                                        var _employeeName = _projectEmployee.EmployeeName;
+                                                        if (_employeeName == "" || _employeeName == null)
+                                                        {
+                                                            _employeeName = Model.ProjectEmployees[i].EmployeeName;
+                                                        }
+                                                    <tr data-id="@_projectSkill.SkillID" data-skillname="@_projectSkill.SkillName" data-hiredcost="@Model.ProjectEmployees[i].HiredCost"
+                                                        data-skillid="@_projectSkill.SkillID" data-quantity="@Model.ProjectEmployees[i].Quantity" data-ishired="@Model.ProjectEmployees[i].IsHired"
+                                                        data-employeeid="@_projectEmployee.EmployeeID" data-employeename="@_employeeName" data-companyname="@Model.ProjectEmployees[i].CompanyName"
+                                                        data-todate="@Model.ProjectEmployees[i].ToDate" data-fromdate="@Model.ProjectEmployees[i].FromDate">
+                                                        <td>
+                                                            <input type="button" class="btn btn-sm btn-danger" value="Delete"
+                                                                   onclick="deleteDialog('Employee','../Project/ProjectEmployeeDelete','@Model.ProjectEmployees[i].ProjectEmpDetailID','@Model.Skills[i].SkillName');$('#tblProjectSkill tbody tr[data-id=@_projectSkill.SkillID]').remove();" />
+                                                        </td>
+                                                        <td>@_projectSkill.SkillName</td>
+                                                        <td>@_employeeName</td>
+                                                        <td>@Model.ProjectEmployees[i].FromDate.ToString("dd/MM/yyyy")</td>
+                                                        <td>@Model.ProjectEmployees[i].ToDate.ToString("dd/MM/yyyy")</td>
+                                                        <td>@Model.ProjectEmployees[i].IsHired</td>
+                                                        <td>@Model.ProjectEmployees[i].HiredCost</td>
+                                                    </tr>
+                                                    }
+                                                }
+
+
+
+                                                @*<li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>*@
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="row margin-0 hidden">
+                        <div class="col-lg-5"><label class="control-label">Job</label></div>
+                        <div class="col-lg-3"><label class="control-label">From Date</label></div>
+                        <div class="col-lg-3"><label class="control-label">To Date</label></div>
+                    </div>
+                    <div class="row margin-0 hidden" id="frmProjectJob">
+                        <div class="col-lg-5 padding-left-0">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user-plus"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="JobName">Select Job</span>
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+                                            </button>
+                                            <input type="hidden" id="hdnJobID" />
+                                            <ul class="dropdown-menu col-lg-12" id="drpJob" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Job" />
+                                                    </div>
+                                                </li>
+                                                @*@for (int i = 0; i < Model.Jobs.Count; i++)
+                                                {
+                                                    <li data-name="@Model.Jobs[i].JobName" data-id="@Model.Jobs[i].JobID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Job',@Model.Jobs[i].JobID,'@Model.Jobs[i].JobName', event); event.preventDefault()">
+
+                                                            @Model.Jobs[i].JobName
+                                                        </a>
+                                                    </li>
+                                                }*@
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtJobFromDate" placeholder="From Date" onchange="checkJobFromDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtJobToDate" placeholder="To Date" onchange="checkJobToDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <input type="button" class="btn btn-success btn-sm" id="btnAddJob" value="Add"
+                                   onclick="checkJobAvailability();" />
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row margin-0">
+                        <div class="col-lg-7 padding-right-0 hidden" style="max-height:200px;overflow:auto;">
+                            <strong class="text-info">Jobs</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblProjectJob">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Job Name</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @*@for (int i = 0; i < Model.Jobs.Count; i++)
+                                    {
+                                        if (Model.ProjectJobs != null)
+                                        {
+                                            var _projectJob = Model.ProjectJobs.FirstOrDefault(x => x.JobID == Model.Jobs[i].JobID);
+                                            if (_projectJob != null)
+                                            {
+                                                <tr data-id="@Model.Jobs[i].JobID" data-jobname="@Model.Jobs[i].JobName"
+                                                    data-jobid="@Model.Jobs[i].JobID" data-fromdate="@_projectJob.FromDate" data-todate="@_projectJob.ToDate">
+                                                    <td><input type="button" class="btn btn-sm btn-danger" value="Delete" onclick="deleteRow('tblProjectJob',@Model.Jobs[i].JobID);" /></td>
+                                                    <td>@Model.Jobs[i].JobName</td>
+                                                    <td>@_projectJob.FromDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@_projectJob.ToDate.ToString("dd/MM/yyyy")</td>
+                                                </tr>
+                                            }
+                                            @*<li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>
+                                        }
+                                    }*@
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="col-lg-6">
+                            @{
+                                var _isEdit = Request.Url.PathAndQuery.ToLower().Contains("detail");
+                                if (_isEdit)
+                                {
+                                    <input type="button" class="btn btn-success hidden" id="btnCreateProject" onclick="createProject();" value="Create" />
+                                    <input type="button" class="btn btn-primary " id="btnEditProject" onclick="updateProject();" value="Update" />
+                                    <input type="button" class="btn btn-default " id="btnPrintEnquiry" onclick="window.open('../Report/ShowReport?StartDate=@Model.Project.ProjectStartDate.ToString("yyyy-MM-dd")&EndDate=@Model.Project.ProjectEndDate.ToString("yyyy-MM-dd")&Name=Contract&ContractNumber=@Model.Project.ContractNumber', '_blank')" value="Print" />
+                                }
+                                else
+                                {
+                                    <input type="button" class="btn btn-success" id="btnCreate" onclick="createProject();" value="Create" />
+                                }
+                            }
+
+                            @*<input type="button" class="btn btn-info" id="btnClearProject"
+            onclick="clearForm('Project');clearTags();" value="Clear" />*@
+                            <input type="button" class="btn btn-info" id="btnClearProject"
+                                   onclick="window.location.href = '../Project/AllProjects'" value="Clear" />
+                        </div>
+                        <div class="col-lg-5" style="max-height:200px;overflow:auto;">
+                            <strong class="text-info">Previous Status</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblProjectStatus">
+                                <thead>
+                                    <tr>
+                                        <th class="hidden"></th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ProjectStatusDetails != null)
+                                    {
+                                        for (int i = 0; i < Model.ProjectStatusDetails.Count; i++)
+                                        {
+                                            <tr>
+                                                <td class="hidden"></td>
+                                                <td>@Model.ProjectStatus.FirstOrDefault(x => x.ProjectStatusID == Model.ProjectStatusDetails[i].ProjectStatusID).ProjectStatusName</td>
+                                                <td>@Model.ProjectStatusDetails[i].CreatedByDate.ToString("dd/MM/yyyy HH:mm")</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                       
+                    </div>
+                    <hr />
+
+                </div>
+                <div class="form-title">
+                    <h4>All Projects Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-bordered table-striped" id="tblProject">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Project Date</th>
+                                    <th>Project Time</th>
+                                    <th>Project Name</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th class="hidden">ProjectStatusID</th>
+                                    <th>Project Status</th>
+                                    <th>Total Cost</th>
+                                    @*<th>Remarks</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Projects.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Project','','@Model.Projects[i].ProjectID','Project')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="/Project/Details?id=@Model.Projects[i].ProjectID">Edit</a> </td>
+                                            <td>@Model.Projects[i].ProjectDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@Model.Projects[i].ProjectTime.ToString("hh':'mm")</td>
+                                            <td>@Model.Projects[i].ProjectName</td>
+                                            <td>@Model.Projects[i].ProjectStartDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@Model.Projects[i].ProjectEndDate.ToString("dd/MM/yyyy")</td>
+                                            <td class="hidden">@Model.Projects[i].ProjectStatusID</td>
+                                            <td>@Model.Projects[i].ProjectStatus.ProjectStatusName</td>
+                                            <td>@Model.Projects[i].TotalCost</td>
+                                            @*<td>@Model.Projects[0].Remarks</td>*@
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdlCreateSkill" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Skill</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_Skill.cshtml", Model.Skills)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createSkill();filter">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdlCreateDevice" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Device</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_Device.cshtml", Model.Devices)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createDevice()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    if (window.location.href.toLowerCase().indexOf('id') > -1) {
+        paymentchange();
+    }
+    function dateChange() {
+        if ($('#txtProjectStartDate').val() != '' && $('#txtProjectEndDate').val() != '') {
+            var _functionDate = new Date($('#txtFunctionDate').val());
+            var _enquiryDate = new Date($('#txtEnquiryDate').val());
+            if ($('#txtProjectStartDate').val() > $('#txtProjectEndDate').val()) {
+                $('#txtProjectStartDate').val($('#txtProjectEndDate').val());
+                _utility.showNotification('Warning', 'warning', "Project Start Date can't be greater than Project End Date");
+            }
+        }
+    }
+    function checkFromDate(elm) {
+        if ($('#txtToDate').val() != undefined && $('#txtToDate').val() != '') {
+            if (elm.value > $('#txtToDate').val()) {
+                _utility.showNotification('Warning', "warning","From Date can't be greater than To Date!");
+                elm.value = $('#txtToDate').val();
+            }
+        }
+        if(elm.value < $('#txtProjectStartDate').val()){
+            _utility.showNotification('Warning', "warning", "From Date can't be lesser than Project Start Date!");
+            elm.value = $('#txtProjectStartDate').val();
+        }
+        else if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project End Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+    }
+    function checkToDate(elm) {
+        if ($('#txtFromDate').val() != undefined && $('#txtFromDate').val() != '') {
+            if (elm.value < $('#txtFromDate').val()) {
+                _utility.showNotification('Warning', "warning", "From Date can't be lesser than From Date!");
+                elm.value = $('#txtFromDate').val();
+            }
+        }
+        if(elm.value > $('#txtProjectEndDate').val()){
+            _utility.showNotification('Warning', "warning", "To Date can't be Greater than Project End Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+        else if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project Start Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+    }
+    function checkJobFromDate(elm) {
+        if ($('#txtJobToDate').val() != undefined && $('#txtJobToDate').val() != '') {
+            if (elm.value > $('#txtJobToDate').val()) {
+                _utility.showNotification('Warning', "warning", "From Date can't be greater than To Date!");
+                elm.value = $('#txtJobToDate').val();
+            }
+        }
+        if (elm.value < $('#txtProjectStartDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be lesser than Project Start Date!");
+            elm.value = $('#txtProjectStartDate').val();
+        }
+        else if (elm.value > $('#txtProjectStartDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project Start Date!");
+            elm.value = $('#txtProjectStartDate').val();
+        }
+    }
+    function checkJobToDate(elm) {
+        if ($('#txtJobFromDate').val() != undefined && $('#txtJobFromDate').val() != '') {
+            if (elm.value < $('#txtJobFromDate').val()) {
+                _utility.showNotification('Warning', "warning", "From Date can't be lesser than From Date!");
+                elm.value = $('#txtJobFromDate').val();
+            }
+        }
+        if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "To Date can't be Greater than Project End Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+        else if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project Start Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+    }
+    function checkEmployeeFromDate(elm) {
+        if ($('#txtEmployeeToDate').val() != undefined && $('#txtEmployeeToDate').val() != '') {
+            if (elm.value > $('#txtEmployeeToDate').val()) {
+                _utility.showNotification('Warning', "warning", "From Date can't be greater than To Date!");
+                elm.value = $('#txtEmployeeToDate').val();
+            }
+        }
+        if (elm.value < $('#txtProjectStartDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be lesser than Project Start Date!");
+            elm.value = $('#txtProjectStartDate').val();
+        }
+        else if (elm.value > $('#txtProjectStartDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project Start Date!");
+            elm.value = $('#txtProjectStartDate').val();
+        }
+    }
+    function checkEmployeeToDate(elm) {
+        if ($('#txtEmployeeFromDate').val() != undefined && $('#txtEmployeeFromDate').val() != '') {
+            if (elm.value < $('#txtEmployeeFromDate').val()) {
+                _utility.showNotification('Warning', "warning", "From Date can't be lesser than From Date!");
+                elm.value = $('#txtEmployeeFromDate').val();
+            }
+        }
+        if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "To Date can't be Greater than Project End Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+        else if (elm.value > $('#txtProjectEndDate').val()) {
+            _utility.showNotification('Warning', "warning", "From Date can't be greater than Project Start Date!");
+            elm.value = $('#txtProjectEndDate').val();
+        }
+    }
+    function checkDeviceAvailability() {
+        var valid = true;
+        $('#frmProjectDevice *:required, #frmProjectDevice ul.dropdown-menu').each(function (e) {
+            var _elm = $(this);
+            var val = $.trim(_elm.val());
+            if (_elm.is('ul') && (_elm.hasClass('multiple') == false)) {
+                var _hiddenElement = $('#hdn' + _elm.attr('id').replace('drp', '') + 'ID');
+                if (_hiddenElement.val() == '' || _hiddenElement.val() == '0' || _hiddenElement.val() == undefined) {
+                    valid = false;
+                    _elm.parents('.input-group').addClass('border-red');
+                }
+            }
+            else if ((val == '' || val == undefined || _elm.is(':invalid')) && _elm.is(':not(ul)')) {
+                valid = false;
+                _elm.parents('.input-group').addClass('border-red');
+            }
+        });
+        if (valid) {
+            var _hiredCost = 0;
+            var _devieID = $('#hdnDeviceID').val();
+            var _fromDate = $('#txtFromDate').val();
+            var _toDate = $('#txtToDate').val();
+            var _device = $('#drpDevice li[data-id=' + _devieID + ']');
+            var _devieQuantity = _device.data('quantity');
+            var _devieName = _device.data('name');
+            if ($('#txtHiredCost').val() != '') {
+                _hiredCost = $('#txtHiredCost').val();
+            }
+            var _isHired = $('#chkIsHiredDevice').prop('checked');
+            var _quantity = parseInt($('#txtQuantity').val());
+            var _isAvabilable = false;
+            var _currentQuantity = 0;
+            $('#tblProjectDevice tbody tr').each(function () {
+                if ($(this).data('id') == _devieID) {
+                    _currentQuantity += parseInt($(this).data('quantity'));
+                }
+            });
+            if (_isHired == false) {
+                var data = {
+                    'DeviceID': _devieID, 'FromDate': _fromDate, 'ToDate': _toDate, 'Quantity': (_currentQuantity + _quantity),
+                    'DeviceQuantity': _devieQuantity, 'CurrentQuantity': _currentQuantity
+               , 'ProjectStartDate': $('#txtProjectStartDate').val(), 'ProjectEndDate': $('#txtProjectEndDate').val()
+                };
+                var _result = _service.GET('../Project/CheckDeviceAvailability', data, 'JSON');
+                var _msg = '';
+                if (_result.isQuantityAvailable == false) {
+                    _msg += 'Selected Quantity is not available \n';
+                    _msg += 'Available  Quantity is : ' + _result.quantityAvailable + ' \n';
+                    $('#txtQuantity').val(_result.quantityAvailable);
+                }
+                if (_result.isDateAvailable == false) {
+                    _msg += "Device isn't available on the selected dates!\n";
+                    if (_result.avaiableDates.length > 0) {
+                        _msg += "Available Dates are \n";
+                        var _availableDates = _result.avaiableDates;
+                        for (var i = 0; i < _availableDates.length; i++) {
+                            _msg += (i + 1) + ' - ' + _availableDates[i].split('T')[0] + '\n';
+                        }
+                    }
+                }
+                if (_msg != '') {
+                    _utility.showNotification('Warning', "warning", _msg);
+                }
+                _isAvabilable = _result.isDateAvailable && _result.isQuantityAvailable
+            }
+            if (_isAvabilable || _isHired) {
+                var _tr = '<tr  data-deviceid="' + _devieID + '" data-todate="' + _toDate + '" data-id=' + _devieID +
+                    ' data-quantity="' + _quantity + '"  data-devicename="' + _devieName +
+                    '" data-fromdate="' + _fromDate + '"  data-ishired="' + _isHired + '" data-hiredcost="' + _hiredCost + '"> ' +
+                 '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                 'onclick="deleteRow(\'tblProjectDevice\',this);" /></td>'
+                 + '<td>' + _devieName + '</td>'
+                 + '<td>' + _fromDate + '</td>'
+                 + '<td>' + _toDate + '</td>'
+                 + '<td>' + _isHired + '</td>'
+                 + '<td>' + _hiredCost + '</td>'
+                 + '<td>' + _quantity + '</td></tr>';
+                $('#tblProjectDevice tbody:eq(0)').append(_tr);
+                $('#txtFromDate').val('');
+                $('#hdnDeviceID').val('');
+                $('#txtToDate').val('');
+                $('#chkIsHiredDevice').prop('checked', false);
+                $('.dropdown #DeviceName').text('Select Device');
+                $('#txtQuantity').val('');
+                $('#txtHiredCost').val('');
+            }
+            
+        }
+        else{
+            _utility.showNotification('Warning', 'warning', 'Validation Failed!');
+        }
+    }
+    function checkJobAvailability() {
+        var valid = true;
+        $('#frmProjectJob *:required, #frmProjectJob ul.dropdown-menu').each(function (e) {
+            var _elm = $(this);
+            var val = $.trim(_elm.val());
+            if (_elm.is('ul') && (_elm.hasClass('multiple') == false)) {
+                var _hiddenElement = $('#hdn' + _elm.attr('id').replace('drp', '') + 'ID');
+                if (_hiddenElement.val() == '' || _hiddenElement.val() == '0' || _hiddenElement.val() == undefined) {
+                    valid = false;
+                    _elm.parents('.input-group').addClass('border-red');
+                }
+            }
+            else if ((val == '' || val == undefined || _elm.is(':invalid')) && _elm.is(':not(ul)')) {
+                valid = false;
+                _elm.parents('.input-group').addClass('border-red');
+            }
+        });
+        if (valid) {
+            var _jobID = $('#hdnJobID').val();
+            var _fromDate = $('#txtJobFromDate').val();
+            var _toDate = $('#txtJobToDate').val();
+            var _jobName = $('#JobName').text();
+            var _tr = '<tr  data-jobid="' + _jobID + '" data-todate="' + _toDate + '" data-id=' + _jobID +
+                ' data-jobname="' + _jobName + '" data-fromdate="' + _fromDate + '"> ' +
+                '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                'onclick="deleteRow(\'tblProjectJob\',this);" /></td>'
+                + '<td class="hidden">' + _jobID + '</td>'
+                + '<td>' + _jobName + '</td>'
+                + '<td>' + _toDate + '</td>'
+                + '<td>' + _fromDate + '</td></tr>';
+            $('#tblProjectJob tbody:eq(0)').append(_tr);
+            $('#txtJobFromDate').val('');
+            $('#hdnJobID').val('');
+            $('#txtJobToDate').val('');
+            $('.dropdown #JobName').text('Select Job');
+        }
+        else {
+            _utility.showNotification('Warning', 'warning', 'Validation Failed!');
+        }
+    }
+    function addDeviceOjbect() {
+        var _trs = $('#tblProjectDevice tbody tr');
+        if (_trs.length > 0) {
+            var _projectDevices = new Array();
+            _trs.each(function () {
+                var _tr = $(this);
+                _projectDevices.push({
+                    'DeviceID': _tr.data('id'),
+                    'DeviceName': _tr.data('devicename'),
+                    'FromDate': _tr.data('fromdate'),
+                    'ToDate': _tr.data('todate'),
+                    'IsHired': _tr.data('ishired'),
+                    'HiredCost': _tr.data('hiredcost'),
+                    'Quantity': _tr.data('quantity'),
+                });
+            });
+            $('#hdnProjectDevices').val(JSON.stringify(_projectDevices));
+            return true;
+        }
+        else {
+            event.stopPropagation();
+            _utility.showNotification('Error', 'error', 'Device Not Selected!');
+            return false;
+        }
+    }
+    function addJobOjbect() {
+        var _trs = $('#tblProjectJob tbody tr');
+        if (_trs.length > 0) {
+            var _projectJobs = new Array();
+            _trs.each(function () {
+                var _tr = $(this);
+                _projectJobs.push({
+                    'JobID': _tr.data('jobid'),
+                    'JobName': _tr.data('jobname'),
+                    'FromDate': _tr.data('fromdate'),
+                    'ToDate': _tr.data('todate')
+                });
+            });
+            $('#hdnProjectJobs').val(JSON.stringify(_projectJobs));
+            return true;
+        }
+        else {
+            event.stopPropagation();
+            _utility.showNotification('Error', 'error', 'Job Not Selected!');
+            return false;
+        }
+    }
+    function addEmployeeOjbect() {
+        var _trs = $('#tblProjectEmployee tbody tr');
+        if (_trs.length > 0) {
+            var _projectEmployees = new Array();
+            _trs.each(function () {
+                var _tr = $(this);
+                _projectEmployees.push({
+                    'EmployeeID': _tr.data('employeeid'),
+                    'EmployeeName': _tr.data('employeename'),
+                    'FromDate': _tr.data('fromdate'),
+                    'ToDate': _tr.data('todate')
+                });
+            });
+            $('#hdnProjectEmployees').val(JSON.stringify(_projectEmployees));
+            return true;
+        }
+        else {
+            event.stopPropagation();
+            _utility.showNotification('Error', 'error', 'Employee Not Selected!');
+            return false;
+        }
+    }
+    function costchange() {
+        if ($('#txtMinCost').val() != '' && $('#txtMaxCost').val() != '' && $('#txtMinCost').val() != '0' && $('#txtMaxCost').val() != '0') {
+            if (parseFloat($('#txtMinCost').val()) > parseFloat($('#txtMaxCost').val())) {
+                $('#txtMinCost').val(parseFloat($('#txtMaxCost').val()));
+                _utility.showNotification('Warning', 'warning', "Min Cost can't be greater than Max Cost");
+            }
+            if ($('#txtChargeableCost').val() != '' && $('#txtChargeableCost').val() != '0') {
+                if (parseFloat($('#txtChargeableCost').val()) > parseFloat($('#txtMaxCost').val())) {
+                    $('#txtChargeableCost').val(parseFloat($('#txtMaxCost').val()));
+                    _utility.showNotification('Warning', 'warning', "Chargeable Cost can't be greater than Max Cost");
+                }
+                else if (parseFloat($('#txtChargeableCost').val()) < parseFloat($('#txtMinCost').val())) {
+                    $('#txtChargeableCost').val(parseFloat($('#txtMinCost').val()));
+                    _utility.showNotification('Warning', 'warning', "Chargeable Cost can't be lesser than Min Cost");
+                }
+            }
+        }
+        else if ($('#txtChargeableCost').val() != '' && $('#txtChargeableCost').val() != '0') {
+            $('#txtChargeableCost').val('0');
+            _utility.showNotification('Warning', 'warning', "Please Enter Min Cost and Max Cost first!");
+        }
+    }
+    function calculateTotal() {
+        if ($('#txtChargeableCost').val() != '' && $('#txtChargeableCost').val() != '0') {
+            var _finalCost = parseFloat($('#txtChargeableCost').val()) - parseFloat($('#txtDiscount').val());
+            if ($('#txtVat').val() != '') {
+                _finalCost += (_finalCost * parseFloat($('#txtVat').val()) / 100);
+            }
+            $('#txtFinalCost').val(_finalCost);
+        }
+        else {
+            $('#txtDiscount').val('0');
+            _utility.showNotification('Warning', 'warning', "Please enter Chargeable Cost first!");
+        }
+    }
+    function loadFiles(elm) {
+        if (elm.files && elm.files[0]) {
+            var _files = new Array();
+            var _fileNames = new Array();
+            if (files.length > 10) {
+                elm.value = '';
+                _utility.showNotification('Warning', 'warning', 'Max Files are allowed! \n Please upload again');
+            }
+            else {
+                for (var i = 0; i < elm.files.length; i++) {
+
+                    var iSize = (elm.files[i].size / 1024);
+                    iSize = (Math.round(iSize * 100) / 100);
+                    if (iSize > 500) {
+                        elm.value = '';
+                        _utility.showNotification('Warning','warning','Max File size allowed is 500kb! \n Please upload again');
+                    }
+                    //if (iSize / 1024 > 1)
+                    //{
+                    //   if (((iSize / 1024) / 1024) > 1)
+                    //   {
+                    //       iSize = (Math.round(((iSize / 1024) / 1024) * 100) / 100);
+                    //       $("#lblSize").html( iSize + "Gb");
+                    //   }
+                    //   else
+                    //   {
+                    //       iSize = (Math.round((iSize / 1024) * 100) / 100)
+                    //       $("#lblSize").html( iSize + "Mb");
+                    //   }
+                    //}
+                    //else
+                    //{
+
+                    // $("#lblSize").html( iSize  + "kb");
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        //$('#' + element).attr('src', e.target.result);
+                        _files.push(e.target.result);
+                    }
+                    reader.onerror = function (error) {
+                        elm.value = '';
+                        _utility.showNotification('Warning', 'warning', 'Upload Failed! \n Please upload again');
+                    };
+                    reader.readAsDataURL(elm.files[i]);
+                    _fileNames.push(elm.files[i].name);
+                }
+                $('#txtFileNames').val(JSON.stringify(_fileNames));
+                setTimeout(function () { $('#txtFilesPath').val(JSON.stringify(_files)); },500)
+            }
+        }
+    }
+    function createProject() {
+        if (addDeviceOjbect()) {
+            //if (addJobOjbect()) {
+            if (addSkillOjbect('tblProjectSkill')) {
+                    updatePaymentDates();
+                    create('Project', '', true)
+                }
+            //}
+        }
+    }
+    function updateProject() {
+        if (addDeviceOjbect()) {
+            //if (addJobOjbect()) {
+            if (addSkillOjbect('tblProjectSkill')) {
+                    updatePaymentDates();
+                    update('Project', '', true)
+                }
+            //}
+        }
+    }
+    function paymentchange() {
+        var _firstPayment = $('#txtPayment1').val();
+        var _secondPayment = $('#txtPayment2').val();
+        var _thirdPayment = $('#txtPayment3').val();
+        var _fourPayment = $('#txtPayment4').val();
+        var _finalCost = $('#txtFinalCost').val();
+        if (_firstPayment == '') {
+            _firstPayment = 0;
+        }
+        if (_secondPayment == '') {
+            _secondPayment = 0;
+        }
+        if (_thirdPayment == '') {
+            _thirdPayment = 0;
+        }
+        if (_fourPayment == '') {
+            _fourPayment = 0;
+        }
+        if (_finalCost == '') {
+            _finalCost = 0;
+        }
+        var _balance = parseFloat(_finalCost) - (parseFloat(_firstPayment) +
+            parseFloat(_secondPayment) + parseFloat(_thirdPayment) + parseFloat(_fourPayment));
+        $('#txtBalance').val(_balance);
+    }
+    function updatePaymentDates() {
+        for (var i = 1; i <= 4; i++) {
+            if ($('#txtPayment' + i).val() != '') {
+                if (parseFloat($('#txtPayment' + i).val()) > 0) {
+                    if ($('#txtPaymentDate' + i).val() == '') {
+                        var _date = new Date();
+                        var _month = _date.getMonth() + 1;
+                        var _day = _date.getDate();
+                        if (_month < 10) {
+                            _month = '0' + _month;
+                        }
+                        if (_day < 10) {
+                            _day = '0' + _day;
+                        }
+                        $('#txtPaymentDate' + i).val(_date.getFullYear() + '-' + _month + '-' + _day)
+                    }
+                    
+                    
+                }
+            }
+        }
+        
+    }
+    function getEnquiryData(enquiryID) {
+        var _result = _service.GET('../Project/EnquiryDetails/' + enquiryID, {}, 'JSON');
+        if (_result) {
+            $('#txtVenue').val(_result.Enquiry.Venue);
+            $('#txtChargeableCost').val(_result.Enquiry.ChargeableCost);
+            var _date = ToJavaScriptDate(_result.Enquiry.FunctionDate).split('/');
+            $('#txtProjectDate').val(_date[2] + '-' + _date[1] + '-' + _date[0]);
+            $('#hdnFunctionTypeID').val(_result.Enquiry.FunctionTypeID);
+            var _functionTypeName = $('#drpFunctionType li[data-id=' + _result.Enquiry.FunctionTypeID + ']').data('name');
+            $('#FunctionTypeName').text(_functionTypeName);
+        if (_result.EnquiryEmployees) {
+            $('#tblProjectSkill tbody:eq(0)').html('');
+            for (var i = 0; i < _result.EnquiryEmployees.length; i++) {
+                var _employeeName = '';
+                $('#drpEmployee li').each(function () {
+                    var _li =$(this);
+                    if (_li.data('id') == _result.EnquiryEmployees[i].EmployeeID) {
+                        _employeeName = _li.data('name');
+                    }
+                });
+                if (_employeeName == undefined || _employeeName == '' || _employeeName == null) {
+                    _employeeName = _result.EnquiryEmployees[i].EmployeeName;
+                }
+                var _toDate = ToJavaScriptDate(_result.EnquiryEmployees[i].ToDate).split('/').reverse().join('-');
+                var _fromDate = ToJavaScriptDate(_result.EnquiryEmployees[i].FromDate).split('/').reverse().join('-');
+                _tr = '<tr data-skillid="' + _result.EnquiryEmployees[i].SkillID + '" data-skillname="' + _result.EnquiryEmployees[i].Skill.SkillName +
+                    '"  data-employeeid="' + _result.EnquiryEmployees[i].EmployeeID + '" data-todate="'
+                    + _toDate + '" data-id="' + _result.EnquiryEmployees[i].EmployeeID +
+                    '"  data-ishired="' + _result.EnquiryEmployees[i].IsHired + '" data-hiredcost="' + _result.EnquiryEmployees[i].HiredCost +
+                    '" data-employeename="' + _employeeName + '" data-companyname="' + _result.EnquiryEmployees[i].CompanyName + '" data-fromdate="' + _fromDate + '"> ' +
+                    '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                    'onclick="deleteRow(\'tblProjectSkill\',this);" /></td>'
+                    + '<td class="hidden">' + _result.EnquiryEmployees[i].SkillID + '</td>'
+                    + '<td>' + _result.EnquiryEmployees[i].Skill.SkillName + '</td>'
+                    + '<td class="hidden">' + _result.EnquiryEmployees[i].EmployeeID + '</td>'
+                    + '<td>' + _employeeName + '</td>'
+                    + '<td>' + _fromDate + '</td>'
+                    + '<td>' + _toDate + '</td>'
+                    + '<td>' + _result.EnquiryEmployees[i].IsHired + '</td>'
+                    + '<td>' + _result.EnquiryEmployees[i].HiredCost + '</td></tr>';     
+                $('#tblProjectSkill tbody:eq(0)').append(_tr);
+            }
+        }
+        if (_result.EnquiryDevices) {
+            $('#tblProjectDevice tbody:eq(0)').html('');
+            for (var i = 0; i < _result.EnquiryDevices.length; i++) {
+                var _toDate = ToJavaScriptDate(_result.EnquiryDevices[i].ToDate).split('/').reverse().join('-');
+                var _fromDate = ToJavaScriptDate(_result.EnquiryDevices[i].FromDate).split('/').reverse().join('-');
+                var _tr = '<tr  data-deviceid="' + _result.EnquiryDevices[i].DevieID + '" data-todate="' + _toDate + '" data-id="' + _result.EnquiryDevices[i].DeviceID +
+                    '" data-quantity="' + _result.EnquiryDevices[i].Quantity + '"  data-devicename="' + _result.EnquiryDevices[i].Device.DeviceName +
+                    '" data-fromdate="' + _fromDate + '"  data-ishired="' + _result.EnquiryDevices[i].IsHired + '" data-hiredcost="' + _result.EnquiryDevices[i].HiredCost + '"> ' +
+                 '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                 'onclick="deleteRow(\'tblProjectDevice\',this);" /></td>'
+                 + '<td>' + _result.EnquiryDevices[i].Device.DeviceName + '</td>'
+                 + '<td>' + _fromDate + '</td>'
+                 + '<td>' + _toDate + '</td>'
+                 + '<td>' + _result.EnquiryDevices[i].IsHired + '</td>'
+                 + '<td>' + _result.EnquiryDevices[i].HiredCost + '</td>'
+                 + '<td>' + _result.EnquiryDevices[i].Quantity + '</td></tr>';
+                $('#tblProjectDevice tbody:eq(0)').append(_tr);
+            }
+        }
+
+        }
+    }
+</script>

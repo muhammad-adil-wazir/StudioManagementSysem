@@ -1,0 +1,94 @@
+﻿
+@{
+    ViewBag.Title = "AllDesignations";
+}
+
+<h2>AllDesignations</h2>
+
+@model List<SMS.DataContext.Entities.Designation>
+@{
+    ViewBag.Title = "Designation";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Designation Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmDesignation">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="DesignationID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="DesignationName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateDesignation" onclick="create('Designation','Employee/DesignationCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditDesignation" onclick="update('Designation','Employee/DesignationEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearDesignation"
+                                       onclick="clearForm('Designation');" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Designations Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblDesignation">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Designation ID</th>
+                                    <th>Designation Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Designation','../Employee/DesignationDelete','@Model[i].DesignationID','@Model[i].DesignationName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Designation',this)">Edit</a> </td>
+                                            <td id="DesignationID" class="hidden">@Model[i].DesignationID</td>
+                                            <td id="DesignationName">@Model[i].DesignationName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

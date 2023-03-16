@@ -1,0 +1,68 @@
+﻿@model List<SMS.DataContext.Entities.Device>
+@{
+    ViewBag.Title = "Device";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Device Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    @Html.Partial("~/Views/Shared/_Device.cshtml", Model)
+                </div>
+                <div class="form-title">
+                    <h4>Device Details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <table class="table table-bordered table-striped" id="tblDevice">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Device ID</th>
+                                    <th>Device Name</th>
+                                    <th>Display</th>
+                                    <th>Recorder</th>
+                                    <th>Media</th>
+                                    <th>Video</th>
+                                    <th>Audio</th>
+                                    <th>Power</th>
+                                   @* <th>IsHired</th>*@
+                                    <th>Quantity</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Device','','@Model[i].DeviceID','@Model[i].DeviceName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Device',this)">Edit</a> </td>
+                                            <td id="DeviceID" class="hidden">@Model[i].DeviceID</td>
+                                            <td id="DeviceName">@Model[i].DeviceName</td>
+                                            <td id="Display">@Model[i].Display</td>
+                                            <td id="Recorder">@Model[i].Recorder</td>
+                                            <td id="Media">@Model[i].Media</td>
+                                            <td id="Video">@Model[i].Video</td>
+                                            <td id="Audio">@Model[i].Audio</td>
+                                            <td id="Power">@Model[i].Power</td>
+                                            @*<td id="IsHired">@Model[i].IsHired</td>*@
+                                            <td id="Quantity">@Model[i].Quantity</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

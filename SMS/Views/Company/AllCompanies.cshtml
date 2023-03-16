@@ -1,0 +1,416 @@
+﻿@model SMS.Models.CompanyComplexModel
+@{
+    ViewBag.Title = "AllCustomers";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Company Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form id="frmCompany" class="form-horizontal" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="CompanyID" class="form-control1">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-institution"></i>
+                                            </span>
+                                            <input type="text" name="CompanyName" class="form-control1" required placeholder="Company Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Company Number</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-tint"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Company Number" name="CompanyNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Parent Company</label>
+                                    <input type="hidden" id="hdnParentCompanyID" name="ParentCompanyID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-institution"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="ParentCompanyName" id="ParentCompanyName">Select Parent Company</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpParentCompany" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Parent Company">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="ParentCompany" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Companies.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Companies[i].CompanyName" data-id="@Model.Companies[i].CompanyID">
+                                                            <a href="javascript:void(0)" onclick="setItem('ParentCompany',@Model.Companies[i].CompanyID,'@Model.Companies[i].CompanyName');">
+                                                                @Model.Companies[i].CompanyName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Location</label>
+                                    <input type="hidden" id="hdnLocationID" name="LocationID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="LocationName" id="LocationName">Select Location</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpLocation" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Location">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Location" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Locations.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Locations[i].LocationName" data-id="@Model.Locations[i].LocationID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Location',@Model.Locations[i].LocationID,'@Model.Locations[i].LocationName');">
+                                                                @Model.Locations[i].LocationName
+                                                            </a>
+                                                        </li>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Contact Person</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="tel" class="form-control1" required id="exampleInputPassword1" name="ContactPerson" placeholder="Contact Person">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Office Number</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-phone"></i>
+                                            </span>
+                                            <input type="tel" class="form-control1" required id="txtOfficeNumber" name="OfficeNumber" placeholder="Office Number">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Mobile Number</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-mobile"></i>
+                                            </span>
+                                            <input class="form-control1" required type="text" placeholder="Mobile Number" name="MobileNumber">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Established By</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Established By" name="EstablishedBy">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Establishment Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calculator"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Establishment Date" name="EstablishmentDate">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Assisted By</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Assisted By" name="AssistedBy">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Registration ID</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-plus"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Registration ID" name="RegistrationID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateCompany" onclick="create('Company','',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditCompany" onclick="update('Company','',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearCompany"
+                                       onclick="clearForm('Company')" value="Clear" />
+                                @*<input type="submit" class="hidden " id="btnCreateCustomerHidden" value="Create" />*@
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Photo</label>
+                                    <div class="col-sm-8 text-center">
+                                        <input type="file" class="form-control input-sm is-image" id="filePhoto" accept="image/*" onchange="_utility.imagePreview(this,'imgCompany','txtLogo')" name="LogoFile" />
+                                        <img id="imgCompany" name="imgCompany" src="~/Content/Images/placeholder-pic.png" alt="Company"  />
+                                        <input type="hidden" name="Logo" id="txtLogo" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Country</label>
+                                    <input type="hidden" id="hdnCountryID" name="CountryID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-area-chart"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="CountryName" id="CountryName">Select Country</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpCountry" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Country">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Country" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Countries.Count; i++)
+                                                    {
+
+                                                        <li data-name="@Model.Countries[i].CountryName" data-id="@Model.Countries[i].CountryID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Country',@Model.Countries[i].CountryID,'@Model.Countries[i].CountryName');">
+                                                                @Model.Countries[i].CountryName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Currency</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-dollar"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Currency" name="Currency">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Total Capital</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Total Capital" name="TotalCapital">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Total Shares</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Total Shares" name="TotalShares">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Initial Value</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Initial Value" name="InitialValue">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Current Value</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-money"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" required placeholder="Current Value" name="CurrentValue">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Address</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-location-arrow"></i>
+                                            </span>
+                                            <textarea class="form-control" required placeholder="Address" name="Address"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="email" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Customer Details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-bordered table-striped" id="tblCompany">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Company ID</th>
+                                    <th>Customer Name</th>
+                                    <th class="hidden">Parent Company ID</th>
+                                    <th>Parent Company</th>
+                                    <th class="hidden">Location ID</th>
+                                    <th>Location</th>
+                                    <th class="hidden">Country ID</th>
+                                    <th>Country</th>
+                                    <th>Contact Person</th>
+                                    <th>Mobile Number</th>
+                                    <th>Office Number</th>
+                                    <th>Company Number</th>
+                                    <th>Established By</th>
+                                    <th>Established Date</th>
+                                    <th>Assisted By</th>
+                                    <th>Registration ID</th>
+                                    <th>Currency</th>
+                                    <th>Total Capital</th>
+                                    <th>Total Shares</th>
+                                    <th>Initial Value</th>
+                                    <th>Current Value</th>
+                                    <th>Address</th>
+                                    <th>Remarks</th>
+                                    <th class="hidden">Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Companies.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Company','','@Model.Companies[i].CompanyID','@Model.Companies[i].CompanyName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Company',this);event.stopPropagation();">Edit</a> </td>
+                                            <td class="hidden" id="CompanyID">@Model.Companies[i].CompanyID</td>
+                                            <td id="CompanyName">@Model.Companies[i].CompanyName</td>
+                                            <td class="hidden" id="ParentCompanyID">@Model.Companies[i].ParentCompanyID</td>
+                                            @{
+                                                var _companyName = "";
+                                                if (Model.Companies[i].ParentCompanyID != null)
+                                                {
+                                                    _companyName = Model.Companies.FirstOrDefault(x=>x.CompanyID == Model.Companies[i].ParentCompanyID).CompanyName;
+                                                }
+                                                <td id="ParentCompanyName">@_companyName</td>
+                                            }
+                                            
+                                            <td class="hidden" id="LocationID">@Model.Companies[i].LocationID</td>
+                                            <td id="LocationName">@Model.Companies[i].Location.LocationName</td>
+                                             <td class="hidden" id="CountryID">@Model.Companies[i].CountryID</td>
+                                            <td id="CountryName">@Model.Companies[i].Country.CountryName</td>
+                                            <td id="ContactPerson">@Model.Companies[i].ContactPerson</td>
+                                            <td id="MobileNumber">@Model.Companies[i].MobileNumber</td>
+                                            <td id="OfficeNumber">@Model.Companies[i].OfficeNumber</td>
+                                            <td id="CompanyNumber">@Model.Companies[i].CompanyNumber</td>
+                                            <td id="EstablishedBy">@Model.Companies[i].EstablishedBy</td>
+                                            <td id="EstablishmentDate">@Model.Companies[i].EstablishmentDate.ToString("dd/MM/yyyy")</td>
+                                            <td id="AssistedBy">@Model.Companies[i].AssistedBy</td>
+                                            <td id="RegistrationID">@Model.Companies[i].RegistrationID</td>
+                                            <td id="Currency">@Model.Companies[i].Currency</td>
+                                            <td id="TotalCapital">@Model.Companies[i].TotalCapital</td>
+                                            <td id="TotalShares">@Model.Companies[i].TotalShares</td>
+                                            <td id="InitialValue">@Model.Companies[i].InitialValue</td>
+                                            <td id="CurrentValue">@Model.Companies[i].CurrentValue</td>
+                                            <td id="Address">@Model.Companies[i].Address</td>
+                                            <td id="Remarks">@Model.Companies[i].Remarks</td>
+                                            <td class="hidden" id="imgCompany">../Content/Images/CompanyLogo/@Model.Companies[i].Logo</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

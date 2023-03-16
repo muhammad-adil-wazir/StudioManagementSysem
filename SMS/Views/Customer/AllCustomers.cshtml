@@ -1,0 +1,68 @@
+﻿@model SMS.Models.CustomerComplexModel
+@{
+    ViewBag.Title = "AllCustomers";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Customer Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    @{Html.RenderPartial("~/Views/Shared/_Customer.cshtml", Model); }
+                </div>
+                <div class="form-title">
+                    <h4>Customer Details</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblCustomer">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Customer ID</th>
+                                    <th>Customer Name</th>
+                                    <th class="hidden">Country ID</th>
+                                    <th>Country</th>
+                                    <th class="hidden">Location ID</th>
+                                    <th>Location</th>
+                                    <th>Phone Number</th>
+                                    <th>Mobile Number</th>
+                                    <th>Email</th>
+                                    <th>Address</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Customers.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Customer','','@Model.Customers[i].CustomerID','@Model.Customers[i].CustomerName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Customer',this);event.stopPropagation();">Edit</a> </td>
+                                            <td class="hidden" id="CustomerID">@Model.Customers[i].CustomerID</td>
+                                            <td id="CustomerName">@Model.Customers[i].CustomerName</td>
+                                            <td class="hidden" id="CountryID">@Model.Customers[i].CountryID</td>
+                                            <td id="CountryName">@Model.Customers[i].Country.CountryName</td>
+                                            <td class="hidden" id="LocationID">@Model.Customers[i].LocationID</td>
+                                            <td id="LocationName">@Model.Customers[i].Location.LocationName</td>
+                                            <td id="PhoneNumber">@Model.Customers[i].PhoneNumber</td>
+                                            <td id="MobileNumber">@Model.Customers[i].MobileNumber</td>
+                                            <td id="Email">@Model.Customers[i].Email</td>
+                                            <td id="Address">@Model.Customers[i].Address</td>
+                                            <td id="Remarks">@Model.Customers[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+    </div>
+</div>
+

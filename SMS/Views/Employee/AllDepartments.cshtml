@@ -1,0 +1,87 @@
+﻿@model List<SMS.DataContext.Entities.Department>
+@{
+    ViewBag.Title = "Department";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Department Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmDepartment">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="DepartmentID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="DepartmentName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateDepartment" onclick="create('Department','Employee/DepartmentCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditDepartment" onclick="update('Department','Employee/DepartmentEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearDepartment"
+                                       onclick="clearForm('Department')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Departments Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblDepartment">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Department ID</th>
+                                    <th>Department Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Department','../Employee/DepartmentDelete','@Model[i].DepartmentID','@Model[i].DepartmentName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Department',this)">Edit</a> </td>
+                                            <td id="DepartmentID" class="hidden">@Model[i].DepartmentID</td>
+                                            <td id="DepartmentName">@Model[i].DepartmentName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

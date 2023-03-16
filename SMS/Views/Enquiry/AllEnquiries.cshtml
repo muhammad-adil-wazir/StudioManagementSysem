@@ -1,0 +1,1452 @@
+﻿﻿@model SMS.Models.EnquiryComplexModel
+@{
+    ViewBag.Title = "Enquiry";
+}
+<style>.dropdown-menu {padding: 0px !important;margin: 0px !important;}
+    #btnClearCustomer, #btnCreateCustomer,#btnClearCustomer, #btnCreateCustomer,
+    #btnClearSkill, #btnCreateSkill,#btnClearEnquiryStatus, #btnCreateEnquiryStatus,
+    #btnClearDevice, #btnCreateDevice,#btnClearEnquiryType, #btnCreateEnquiryType {display: none;}
+</style>
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Enquiry Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmEnquiry">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" id="EnquiryID" name="EnquiryID" value="@Model.Enquiry.EnquiryID" />
+                                <input type="hidden" name="EnquiryDevices" id="hdnEnquiryDevices" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnquiryDevices))" />
+                                @*<input type="hidden" name="EnquiryJobs" id="hdnEnquiryJobs" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnquiryJobs))" />*@
+                                @*<input type="hidden" name="EnquirySkills" id="hdnEnquirySkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnquirySkills))" />*@
+                                @*<input type="hidden" name="EnquiryFunctionTypes" id="hdnEnquiryFunctionTypes" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnquiryFunctionTypes))" />*@
+                                @*<input type="hidden" name="EnquiryEmployees" id="hdnEnquiryEmployees" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EnquiryEmployees))" />*@
+                                <input type="hidden" name="EmployeeSkills" id="hdnEmployeeSkills" value="@(Newtonsoft.Json.JsonConvert.SerializeObject(Model.EmployeeSkills))" />
+                                @*<div class="form-group">
+                                        <label class="col-md-3 control-label">Enquiry Id</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-calendar-times-o"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="Enquiry Id">
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label padding-left-0">Enquiry Number</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle-o"></i>
+                                            </span>
+                                            <input disabled type="text" class="form-control" placeholder="Enquiry Number" value="@Model.Enquiry.EnquiryID">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enquiry Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-calendar-times-o"></i>
+                                            </span>
+                                            <input required type="date" id="txtEnquiryDate" onchange="dateChange()" class="form-control" name="EnquiryDate" placeholder="Enquiry Date" value="@Model.Enquiry.EnquiryDate.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enquiry Time</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input required type="time" class="form-control" placeholder="Enquiry Time" name="EnquiryTime" value="@Model.Enquiry.EnquiryTime.ToString("hh':'mm")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Venue</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user-secret"></i>
+                                            </span>
+                                            <input required type="text" class="form-control" placeholder="Venue" name="Venue" value="@Model.Enquiry.Venue">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <label class="col-md-3 control-label">Max Cost</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input onchange="costchange();" required type="number" id="txtMaxCost" class="form-control" placeholder="Max Cost" name="MaxCost" value="@Model.Enquiry.MaxCost">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group hidden">
+                                    <label class="col-md-3 control-label">Min Cost</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input onchange="costchange();" id="txtMinCost" required type="number" class="form-control" placeholder="Min Cost" name="MinCost" value="@Model.Enquiry.MinCost">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label class="col-md-3 control-label padding-left-0">Chargeable Cost</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <input id="txtChargeableCost" required type="number" class="form-control" placeholder="Chargeable Cost" name="ChargeableCost" value="@Model.Enquiry.ChargeableCost">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enquiry Status</label>
+                                    <input type="hidden" id="hdnEnquiryStatusID" name="EnquiryStatusID" value="@Model.Enquiry.EnquiryStatusID" />
+                                    <div class="col-lg-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    @{
+                                                        var _enquiryStatusName = "Select Enquiry Status";
+                                                        if (Model.Enquiry.EnquiryStatus != null)
+                                                        {
+                                                            _enquiryStatusName = Model.Enquiry.EnquiryStatus.EnquiryStatusName;
+                                                        }
+                                                        <span id="EnquiryStatusName">@_enquiryStatusName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpEnquiryStatus" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Enquiry Status">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Enquiry Status" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.EnquiryStatus.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.EnquiryStatus[i].EnquiryStatusName" data-id="@Model.EnquiryStatus[i].EnquiryStatusID">
+                                                            <a href="javascript:void(0)" onclick="setItem('EnquiryStatus',@Model.EnquiryStatus[i].EnquiryStatusID,'@Model.EnquiryStatus[i].EnquiryStatusName');">
+                                                                @Model.EnquiryStatus[i].EnquiryStatusName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <input class="btn btn-success btn-sm" type="button" id="btnAddEnquiryStatus" onclick="$('#mdlCreateEnquiryStatus').modal('show');" value="New" />
+                                    </div>
+                                </div>
+                                @*<input type="button" class="btn btn-info btnClear" id="btnClearEnquiry"
+                                    onclick="clearForm('Enquiry'); clearTags();" value="Clear" />*@
+                             
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Customer</label>
+                                    <input type="hidden" id="hdnCustomerID" name="CustomerID" value="@Model.Enquiry.CustomerID" />
+                                    <div class="col-lg-7 padding-right-0">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    @{
+                                                        var _customerName = "Select Customer";
+                                                        if (Model.Enquiry.Customer != null)
+                                                        {
+                                                            _customerName = Model.Enquiry.Customer.CustomerName;
+                                                        }
+                                                        <span id="CustomerName">@_customerName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpCustomer" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Customer">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Customer" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.Customers.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.Customers[i].CustomerName" data-id="@Model.Customers[i].CustomerID">
+                                                            <a href="javascript:void(0)" onclick="setItem('Customer',@Model.Customers[i].CustomerID,'@Model.Customers[i].CustomerName');">
+                                                                @Model.Customers[i].CustomerName
+                                                            </a>
+                                                        </li>
+                                                    }
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <input class="btn btn-success btn-sm" type="button" id="btnAddCustomer" onclick="$('#mdlCreateCustomer').modal('show');" value="New" />
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Function Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle-o"></i>
+                                            </span>
+                                            <input required type="date" onchange="dateChange()" id="txtFunctionDate" class="form-control" placeholder="Function Date" name="FunctionDate" value="@Model.Enquiry.FunctionDate.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="form-group">
+                                        <label class="col-md-3 control-label">Chargeable Cost</label>
+                                        <div class="col-md-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-repeat"></i>
+                                                </span>
+                                                <input type="text" class="form-control" placeholder="ChargeableCost" name="ChargeableCost" value="@Model.Enquiry.ChargeableCost">
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                              
+                                @*<div class="form-group">
+                                        <label class="col-md-3 control-label">Device</label>
+                                        <div class="col-lg-8">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-share-alt"></i>
+                                                </span>
+                                                <div class="dropdown dropdown-scroll">
+
+                                                    <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                        <span id="DeviceName">Select Device</span>
+                                                        <span class="float-right">
+                                                            <span class="caret"></span>
+                                                        </span>
+                                                    </button>
+                                                    <ul class="dropdown-menu col-lg-12 multiple" id="drpDevice" role="menu" aria-labelledby="dropdownMenu1">
+                                                        <li role="presentation">
+                                                            <div class="input-group input-group-sm search-control">
+                                                                <span class="input-group-addon">
+                                                                    <span class="glyphicon glyphicon-search"></span>
+                                                                </span>
+                                                                <input type="text" class="form-control" placeholder="Device" />
+                                                            </div>
+                                                        </li>
+                                                        @for (int i = 0; i < Model.Devices.Count; i++)
+                                                        {
+                                                            var _checked = "";
+                                                            if (Model.EnquiryDevices != null)
+                                                            {
+                                                                if (Model.EnquiryDevices.Any(x => x.DeviceID == Model.Devices[i].DeviceID))
+                                                                {
+                                                                    _checked = "checked='checked'";
+                                                                }
+                                                            }
+                                                            <li data-name="@Model.Devices[i].DeviceName" data-id="@Model.Devices[i].DeviceID">
+                                                                <a href="javascript:void(0)" onclick="toggleItem('hdnEnquiryDevices', 'Device', this,@Model.Devices[i].DeviceID,'@Model.Devices[i].DeviceName', event); event.preventDefault()">
+                                                                    <div class="icheckbox_flat-blue checkbox-container">
+                                                                        <input type="checkbox" @_checked class="flat">
+                                                                        <span class="checkmark"></span>
+                                                                    </div>
+                                                                    @Model.Devices[i].DeviceName
+                                                                </a>
+                                                            </li>
+                                                        }
+
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label padding-left-0">Device Quantity</label>
+                                        <div class="col-md-5">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="fa fa-times-circle"></i>
+                                                </span>
+                                                <input id="txtDeviceQuantity" required type="number" class="form-control" placeholder="Device Quantity" name="DeviceQuantity" value="0">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <input type="button" id="btnAddDevice" value="Add" class="btn btn-sm btn-success" />
+                                        </div>
+                                    </div>*@
+
+
+                                <div class="form-group hidden">
+                                    <label class="col-md-3 control-label">Job</label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                    <span id="JobName">Select Job</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12 multiple" id="drpJob" role="menu" aria-labelledby="dropdownMenu1">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Job" />
+                                                        </div>
+                                                    </li>
+                                                    @*@for (int i = 0; i < Model.Jobs.Count; i++)
+                                                    {
+                                                        var _checked = "";
+                                                        if (Model.EnquiryJobs != null)
+                                                        {
+                                                            if (Model.EnquiryJobs.Any(x => x.JobID == Model.Jobs[i].JobID))
+                                                            {
+                                                                _checked = "checked='checked'";
+                                                            }
+                                                        }
+                                                        <li data-name="@Model.Jobs[i].JobName" data-id="@Model.Jobs[i].JobID">
+                                                            <a href="javascript:void(0)" onclick="toggleItem('hdnEnquiryJobs', 'Job', this,@Model.Jobs[i].JobID,'@Model.Jobs[i].JobName', event); event.preventDefault()">
+                                                                <div class="icheckbox_flat-blue checkbox-container">
+                                                                    <input type="checkbox" @_checked class="flat">
+                                                                    <span class="checkmark"></span>
+                                                                </div>
+                                                                @Model.Jobs[i].JobName
+                                                            </a>
+                                                        </li>
+                                                    }*@
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Function Type</label>
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <input type="hidden" id="hdnFunctionTypeID" name="FunctionTypeID" value="@Model.Enquiry.FunctionTypeID" />
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                    @{
+                                                        var _functionTypeName = "Select Function Type";
+                                                        if (Model.Enquiry.FunctionTypeID > 0)
+                                                        {
+                                                            _functionTypeName = Model.FunctionTypes.FirstOrDefault(x=>x.FunctionTypeID == Model.Enquiry.FunctionTypeID).FunctionTypeName;
+                                                        }
+                                                        <span id="FunctionTypeName">@_functionTypeName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpFunctionType" role="menu" aria-labelledby="dropdownMenu1">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Function Type" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.FunctionTypes.Count; i++)
+                                                    {
+                                                        //var _checked = "";
+                                                        //if (Model.EnquiryJobs != null)
+                                                        //{
+                                                        //    if (Model.EnquiryFunctionTypes.Any(x => x.FunctionTypeID == Model.FunctionTypes[i].FunctionTypeID))
+                                                        //    {
+                                                        //        _checked = "checked='checked'";
+                                                        //    }
+                                                        //} 
+                                                        <li data-name="@Model.FunctionTypes[i].FunctionTypeName" data-id="@Model.FunctionTypes[i].FunctionTypeID">
+                                                            <a href="javascript:void(0)" onclick="setItem('FunctionType',@Model.FunctionTypes[i].FunctionTypeID,'@Model.FunctionTypes[i].FunctionTypeName');">
+                                                                @Model.FunctionTypes[i].FunctionTypeName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Enquiry Type</label>
+                                    <input type="hidden" id="hdnEnquiryTypeID" name="EnquiryTypeID" value="@Model.Enquiry.EnquiryTypeID" />
+                                    <div class="col-lg-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-share-alt"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    @{
+                                                        var _enquiryTypeName = "Select Enquiry Type";
+                                                        if (Model.Enquiry.EnquiryType != null)
+                                                        {
+                                                            _enquiryTypeName = Model.Enquiry.EnquiryType.EnquiryTypeName;
+                                                        }
+                                                        <span id="EnquiryTypeName">@_enquiryTypeName</span>
+                                                    }
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12" id="drpEnquiryType" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Enquiry Type">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="Enquiry Type" />
+                                                        </div>
+                                                    </li>
+                                                    @for (int i = 0; i < Model.EnquiryTypes.Count; i++)
+                                                    {
+                                                        <li data-name="@Model.EnquiryTypes[i].EnquiryTypeName" data-id="@Model.EnquiryTypes[i].EnquiryTypeID">
+                                                            <a href="javascript:void(0)" onclick="setItem('EnquiryType',@Model.EnquiryTypes[i].EnquiryTypeID,'@Model.EnquiryTypes[i].EnquiryTypeName');">
+                                                                @Model.EnquiryTypes[i].EnquiryTypeName
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-1">
+                                        <input class="btn btn-success btn-sm" type="button" id="btnAddEnquiryType" onclick="$('#mdlCreateEnquiryType').modal('show');" value="New" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Reference</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-times-circle"></i>
+                                            </span>
+                                            <textarea class="form-control" placeholder="Reference" name="Reference">@Model.Enquiry.Reference</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea required class="form-control" type="text" placeholder="Remarks" name="Remarks">@Model.Enquiry.Remarks</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                             
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                    <div class="row margin-0">
+                        <div class="col-lg-3"><label class="control-label">Device</label></div>
+                        <div class="col-lg-2"><label class="control-label">From Date</label></div>
+                        <div class="col-lg-2"><label class="control-label">To Date</label></div>
+                        <div class="col-lg-1"><label class="control-label">Qunatity</label></div>
+                        <div class="col-lg-1"><label class="control-label">IsHired</label></div>
+                        <div class="col-lg-1 padding-0"><label class="control-label">Hired Cost</label></div>
+                    </div>
+                    <div class="row margin-0" id="frmEnquiryDevice">
+                        <div class="col-lg-3 padding-right-0">
+                            <div class="form-group">
+                                <div class="col-lg-12 padding-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-desktop"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="DeviceName">Select Device</span>
+
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+
+                                            </button>
+                                            <input type="hidden" id="hdnDeviceID" />
+                                            <ul class="dropdown-menu col-lg-12" id="drpDevice" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Device" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Devices.Count; i++)
+                                                {
+                                                    //var _hired = "false";
+                                                    //var _hiredText = "";
+                                                    //if (Model.Devices[i].IsHired)
+                                                    //{
+                                                    //    _hired = "true";
+                                                    //    _hiredText = "- Hired";
+                                                    //}
+                                                    <li data-name="@Model.Devices[i].DeviceName" data-quantity="@Model.Devices[i].Quantity" data-id="@Model.Devices[i].DeviceID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Device',@Model.Devices[i].DeviceID,'@Model.Devices[i].DeviceName', event); event.preventDefault()">
+                                                            @Model.Devices[i].DeviceName 
+                                                        </a>
+                                                    </li>
+                                                }
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtFromDate" placeholder="From Date" onchange="checkFromDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtToDate" placeholder="To Date" onchange="checkToDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <div class="input-group">
+                                <input required class="form-control" min="1" type="number" id="txtQuantity" placeholder="Quantity" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 ">
+                            <div class="input-group">
+                                <div class="icheckbox_flat-blue checkbox-container" style="padding:0px;">
+                                    <input type="checkbox" id="chkIsHiredDevice" class="flat" style="z-index:1111;width: 20px;
+    height: 18px;">
+                                    <span class="checkmark"></span>
+                                </div>
+                               @* <label>IsHired</label>*@
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-0">
+                            <div class="input-group">
+                                <input class="form-control hidden" type="number" id="txtHiredCost" placeholder="Hired Cost" />
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnAddDevice" value="Add"
+                                   onclick="checkDeviceAvailability()" />
+                        </div>
+                        <div class="col-lg-1 padding-right-0">
+                            <input type="button" class="btn btn-success btn-sm" id="btnNewDevice" value="New"
+                                   onclick="$('#mdlCreateDevice').modal('show');" />
+                        </div>
+                    </div>
+                   
+                     <div class="row margin-0">
+                        <div class="col-lg-12">
+                            <strong class="text-info">Devices</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblEnquiryDevice">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th>Device Name</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                        <th>IsHired</th>
+                                        <th>Hired Cost</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (int i = 0; i < Model.Devices.Count; i++)
+                                    {
+                                        if (Model.EnquiryDevices != null)
+                                        {
+                                            var _enquiryDevice = Model.EnquiryDevices.FirstOrDefault(x => x.DeviceID == Model.Devices[i].DeviceID);
+                                            if (_enquiryDevice != null)
+                                            {
+                                                <tr data-id="@Model.Devices[i].DeviceID" data-devicename="@Model.Devices[i].DeviceName"
+                                                    data-deviceid="@Model.Devices[i].DeviceID" data-quantity="@_enquiryDevice.Quantity"
+                                                    data-fromdate="@_enquiryDevice.FromDate" data-todate="@_enquiryDevice.ToDate"
+                                                    data-hiredcost="@_enquiryDevice.HiredCost" data-ishired="@_enquiryDevice.IsHired">
+                                                    <td>
+                                                        <input type="button" class="btn btn-sm btn-danger" value="Delete"
+                                                               onclick="deleteDialog('Device','../Enquiry/EnquiryDeviceDelete','@_enquiryDevice.EnquiryDeviceDetailID','@Model.Devices[i].DeviceName');$('#tblEnquiryDevice tbody tr[data-id=@Model.Devices[i].DeviceID]').remove();" />
+                                                    </td>
+                                                    <td>@Model.Devices[i].DeviceName</td>
+                                                    <td>@_enquiryDevice.ToDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@_enquiryDevice.FromDate.ToString("dd/MM/yyyy")</td>
+                                                    <td>@_enquiryDevice.IsHired</td>
+                                                    <td>@_enquiryDevice.HiredCost</td>
+                                                    <td>@_enquiryDevice.Quantity</td>
+                                                </tr>
+                                            }
+                                            @*<li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>*@
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row margin-0">
+                        <div class="col-lg-3"><label class="control-label">Skill</label></div>
+                        <div class="col-lg-3"><label class="control-label">Employee</label></div>
+                        <div class="col-lg-2"><label class="control-label">From Date</label></div>
+                        <div class="col-lg-2"><label class="control-label">To Date</label></div>
+                        <div class="col-lg-1"><label class="control-label">IsHired</label></div>
+                        <div class="col-lg-1 padding-0"><label class="control-label">Hired Cost</label></div>
+                    </div>
+                    <div class="row" id="frmEnquirySkill">
+                        <div class="col-lg-3 padding-right-0">
+                            <div class="form-group">
+                                <div class="col-lg-12 padding-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-share-alt"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="SkillName">Select Skill</span>
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+
+                                            </button>
+                                            <input type="hidden" id="hdnSkillID" />
+                                            <ul class="dropdown-menu col-lg-12 multiple" id="drpSkill" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Skill" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Skills.Count; i++)
+                                                {
+                                                    //var _checked = "";
+                                                    ////var _ishired = "";
+                                                    //if (Model.EnquirySkills != null)
+                                                    //{
+                                                    //    if (Model.EnquirySkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                                    //    {
+                                                    //        _checked = "checked='checked'";
+                                                    //    }
+                                                    //}
+                                                    //if (Model.Skills[0].IsHired)
+                                                    //{
+                                                    //    _ishired = " - Hired";
+                                                    //}
+                                                    <li data-name="@Model.Skills[i].SkillName" data-id="@Model.Skills[i].SkillID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Skill',@Model.Skills[i].SkillID,'@Model.Skills[i].SkillName', event); event.preventDefault();filterEmployeeBySkillID(@Model.Skills[i].SkillID)">
+                                                            @*<div class="icheckbox_flat-blue checkbox-container">
+                                                                <input type="checkbox" @_checked class="flat">
+                                                                <span class="checkmark"></span>
+                                                            </div>*@
+                                                            @Model.Skills[i].SkillName
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3  padding-0">
+                            <div class="form-group">
+                                <div class="col-lg-12">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-user-plus"></i>
+                                        </span>
+                                        <div class="dropdown dropdown-scroll">
+
+                                            <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                                                <span id="EmployeeName">Select Employee</span>
+                                                <span class="float-right">
+                                                    <span class="caret"></span>
+                                                </span>
+                                            </button>
+                                            <input type="hidden" id="hdnEmployeeID" />
+                                            <ul class="dropdown-menu col-lg-12 not-required" id="drpEmployee" role="menu" aria-labelledby="dropdownMenu1">
+                                                <li role="presentation">
+                                                    <div class="input-group input-group-sm search-control">
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-search"></span>
+                                                        </span>
+                                                        <input type="text" class="form-control" placeholder="Employee" />
+                                                    </div>
+                                                </li>
+                                                @for (int i = 0; i < Model.Employees.Count; i++)
+                                                {
+                                                    <li data-name="@Model.Employees[i].EmployeeName" data-id="@Model.Employees[i].EmployeeID">
+                                                        <a href="javascript:void(0)" onclick="setItem('Employee',@Model.Employees[i].EmployeeID,'@Model.Employees[i].EmployeeName', event); event.preventDefault()">
+                                                            @Model.Employees[i].EmployeeName
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-2 padding-0">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtEmployeeFromDate" placeholder="From Date" onchange="checkFromDate(this)" />
+                            </div>
+                        </div>
+                        <div class="col-lg-2 padding-0">
+                            <div class="input-group">
+                                <input required class="form-control" type="date" id="txtEmployeeToDate" placeholder="To Date" onchange="checkToDate(this)" />
+                            </div>
+                        </div>
+                        @*<div class="col-lg-1 padding-0">
+                            <div class="input-group">
+                                <input required class="form-control" type="number" id="txtQuantitySkill" placeholder="Quantity" />
+                            </div>
+                        </div>*@
+                        <div class="col-lg-1 padding-right-0">
+                            <div class="input-group">
+                                <div class="icheckbox_flat-blue checkbox-container" style="margin:0px;padding:0px;" >
+                                    <input type="checkbox" onchange="isHiredChange(this)" id="chkIsHiredSkill" class="flat" style="z-index:1111;width: 20px;height: 18px;">
+                                    <span class="checkmark"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 padding-0">
+                            <div class="input-group">
+                                <input class="form-control hidden" type="number" id="txtHiredCostSkill" placeholder="Hired Cost" />
+                            </div>
+                        </div>
+                       
+                        </div>
+                    <div class="row margin-0">
+                        <div class="col-lg-4 hidden containr padding-0">
+                            <label class="col-md-5 control-label padding-right-0">Employee Name</label>
+                            <div class="col-lg-7">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="txtEmployeeName" placeholder="Employee Name" />
+                                </div>
+                            </div>
+                         </div>
+                        <div class="col-lg-4 hidden containr padding-right-0">
+                            <label class="col-md-5 control-label padding-0">Company Name</label>
+                            <div class="col-lg-7">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" id="txtCompanyName" placeholder="Company Name" />
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-lg-1 padding-right-0">
+                                <input type="button" class="btn btn-success btn-sm" id="btnAddSkill" value="Add"
+                                       onclick="checkEmployeeAvailability('EnquirySkill', $('#txtFunctionDate').val(), $('#txtFunctionDate').val())" />
+                            </div>
+                            <div class="col-lg-1 padding-right-0">
+                                <input type="button" class="btn btn-success btn-sm" id="btnNewSkill" value="New"
+                                       onclick="$('#mdlCreateSkill').modal('show');" />
+                            </div>
+                        </div>
+                    <div class="row margin-0">
+                        <div class="col-lg-12">
+                            <strong class="text-info">Skills</strong>
+
+                            <table class="table table-bordered non-datatable" id="tblEnquirySkill">
+                                <thead>
+                                    <tr>
+                                        <th>Action</th>
+                                        <th class="hidden">Skill ID</th>
+                                        <th>Skill Name</th>
+                                        <th class="hidden">Employee ID</th>
+                                        <th>Employee Name</th>
+                                        <th class="hidden">CompanyName</th>
+                                        <th>To Date</th>
+                                        <th>From Date</th>
+                                        <th>IsHired</th>
+                                        <th>Hired Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        if (Model.Enquiry.EnquiryID > 0)
+                                        {
+                                            if (Model.EnquiryEmployees != null)
+                                            {
+                                                for (int i = 0; i < Model.EnquiryEmployees.Count; i++)
+                                                {
+                                                    var _enquiryEmployee = Model.Employees.FirstOrDefault(x => x.EmployeeID == Model.EnquiryEmployees[i].EmployeeID);
+                                                    if (_enquiryEmployee == null)
+                                                    {
+                                                        _enquiryEmployee = new SMS.DataContext.Entities.Employee();
+                                                    }
+                                                    var _enquirySkill = Model.Skills.FirstOrDefault(x => x.SkillID == Model.EnquiryEmployees[i].SkillID);
+                                                    if (_enquiryEmployee != null && _enquirySkill != null)
+                                                    {
+                                                        var _employeeName = _enquiryEmployee.EmployeeName;
+                                                        if(_employeeName == "" || _employeeName == null)
+                                                        {
+                                                            _employeeName = Model.EnquiryEmployees[i].EmployeeName;
+                                                        }
+                                                        <tr data-id="@_enquirySkill.SkillID" data-skillname="@_enquirySkill.SkillName" data-hiredcost="@Model.EnquiryEmployees[i].HiredCost"
+                                                            data-skillid="@_enquirySkill.SkillID" data-quantity="@Model.EnquiryEmployees[i].Quantity" data-ishired="@Model.EnquiryEmployees[i].IsHired"
+                                                            data-employeeid="@_enquiryEmployee.EmployeeID" data-employeename="@_employeeName"  data-companyname="@Model.EnquiryEmployees[i].CompanyName"
+                                                            data-todate="@Model.EnquiryEmployees[i].ToDate" data-fromdate="@Model.EnquiryEmployees[i].FromDate">
+                                                            <td>
+                                                                <input type="button" class="btn btn-sm btn-danger" value="Delete"
+                                                                       onclick="deleteDialog('Employee','../Enquiry/EnquiryEmployeeDelete','@Model.EnquiryEmployees[i].EnquiryEmpDetailID','@_enquirySkill.SkillName','tblEnquirySkill',@_enquirySkill.SkillID);" />
+                                                            </td>
+                                                            <td>@_enquirySkill.SkillName</td>
+                                                            <td>@_employeeName</td>
+                                                            <td class="hidden">@Model.EnquiryEmployees[i].CompanyName</td>
+                                                            <td>@Model.EnquiryEmployees[i].FromDate.ToString("dd/MM/yyyy")</td>
+                                                            <td>@Model.EnquiryEmployees[i].ToDate.ToString("dd/MM/yyyy")</td>
+                                                            <td>@Model.EnquiryEmployees[i].IsHired</td>
+                                                            <td>@Model.EnquiryEmployees[i].HiredCost</td>
+                                                        </tr>
+                                                    }
+                                                }
+
+
+
+                                                @*<li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>*@
+                                            }
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                   <div class="row margin-0">
+                       <div class="col-lg-12">
+                           @{
+                               var _isEdit = Request.Url.PathAndQuery.ToLower().Contains("detail");
+                               if (_isEdit)
+                               {
+                                   <input type="button" class="btn btn-success hidden" id="btnCreateEnquiry" onclick="createEnquiry()" value="Create" />
+                                   <input type="button" class="btn btn-primary " id="btnEditEnquiry" onclick="updateEnquiry();" value="Update" />
+                                   <input type="button" class="btn btn-default " id="btnPrintEnquiry" onclick="window.open('../Report/ShowReport?Name=EnquiryReceipt&EnquiryID=@Model.Enquiry.EnquiryID', '_blank')" value="Print" />
+                               }
+                               else
+                               {
+                                   <input type="button" class="btn btn-success" id="btnCreate" onclick="createEnquiry()" value="Create" />
+                               }
+                           }
+                           <input type="button" class="btn btn-info" id="btnClearEnquiry"
+                                  onclick="window.location.href = '../Enquiry/AllEnquiries'" value="Clear" />
+                          
+                       </div>
+                   </div>
+                    <hr />
+                    <div class="hidden row tag-container">
+                        @*<div class="col-lg-3 text-center tag-list">
+                                        <strong class="text-info">Devices</strong>
+                                        <hr />
+                                            <ul id="lstDevice" class="tags">
+                            @for (int i = 0; i < Model.Devices.Count; i++)
+                            {
+                                if (Model.EnquiryDevices != null)
+                                {
+                                    if (Model.EnquiryDevices.Any(x => x.DeviceID == Model.Devices[i].DeviceID))
+                                    {
+                                        <li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnEnquiryDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>
+                                    }
+                                }
+                            }
+                                            </ul>
+                                    </div>*@
+                        <div class="col-lg-3 text-center tag-list hidden">
+                            <strong class="text-center text-info">Skills</strong>
+                            <hr />
+                            <ul id="lstSkill" class="tags">
+                                @*@for (int i = 0; i < Model.Skills.Count; i++)
+                                {
+                                    if (Model.EnquirySkills != null)
+                                    {
+                                        if (Model.EnquirySkills.Any(x => x.SkillID == Model.Skills[i].SkillID))
+                                        {
+                                            <li data-id="@Model.Skills[i].SkillID"><span onclick="removeItemFromList('hdnEnquirySkills','Skill',@Model.Skills[i].SkillID)">X</span>@Model.Skills[i].SkillName</li>
+                                        }
+                                    }
+                                }*@
+                            </ul>
+                        </div>
+                        <div class="col-lg-4 text-center tag-list hidden">
+                            <strong class="text-center text-info">Jobs</strong>
+                            <hr />
+                            <ul id="lstJob" class="tags">
+                                @*@for (int i = 0; i < Model.Jobs.Count; i++)
+                                {
+                                    if (Model.EnquiryJobs != null)
+                                    {
+                                        if (Model.EnquiryJobs.Any(x => x.JobID == Model.Jobs[i].JobID))
+                                        {
+                                            <li data-id="@Model.Jobs[i].JobID"><span onclick="removeItemFromList('hdnEnquiryJobs','Job',@Model.Jobs[i].JobID)">X</span>@Model.Jobs[i].JobName</li>
+                                        }
+                                    }
+                                }*@
+                            </ul>
+                        </div>
+                        <div class="col-lg-6 text-center tag-list hidden">
+                            <strong class="text-center text-info">Function Types</strong>
+                            <hr />
+                            <ul id="lstFunctionType" class="tags">
+                                @*@for (int i = 0; i < Model.FunctionTypes.Count; i++)
+                                {
+                                    if (Model.EnquiryFunctionTypes != null)
+                                    {
+                                        if (Model.EnquiryFunctionTypes.Any(x => x.FunctionTypeID == Model.FunctionTypes[i].FunctionTypeID))
+                                        {
+                                            <li data-id="@Model.FunctionTypes[i].FunctionTypeID"><span onclick="removeItemFromList('hdnEnquiryFunctionTypes','FunctionType',@Model.FunctionTypes[i].FunctionTypeID)">X</span>@Model.FunctionTypes[i].FunctionTypeName</li>
+                                        }
+                                    }
+                                }*@
+                                @*<li> dfsdf <span>X</span></li>*@
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-9">
+                                  @*<ul id="lstDevice" class="tags">
+                                    @for (int i = 0; i < Model.Devices.Count; i++)
+                                    {
+                                        if (Model.ProjectDevices != null)
+                                        {
+                                            if (Model.ProjectDevices.Any(x => x.DeviceID == Model.Devices[i].DeviceID))
+                                            {
+                                                <li data-id="@Model.Devices[i].DeviceID"><span onclick="removeItemFromList('hdnProjectDevices','Device',@Model.Devices[i].DeviceID)">X</span>@Model.Devices[i].DeviceName</li>
+                                            }
+                                        }
+                                    }
+                                </ul>*@
+                        </div>
+
+                    </div>
+                </div>
+
+                
+                <div class="form-title">
+                    <h4>Enquiries Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 table-responsive">
+                        <table class="table table-bordered table-striped" id="tblEnquiry">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th>Enquiry Date</th>
+                                    <th>Enquiry Time</th>
+                                    <th>Function Type</th>
+                                    <th class="hidden">Customer ID</th>
+                                    <th>Customer Name</th>
+                                    <th class="hidden">EnquiryStatusID</th>
+                                    <th>Enquiry Status</th>
+                                    <th class="hidden">EnquiryTypeID</th>
+                                    <th>Enquiry Type</th>
+                                    @*<th>Remarks</th>*@
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Enquiries.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Enquiry','','@Model.Enquiries[i].EnquiryID','Enquiry')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="/Enquiry/Details?id=@Model.Enquiries[i].EnquiryID">Edit</a> </td>
+                                            @*<td>@Model.Enquiries[0].EnquiryDate</td>
+                                                <td>@Model.Enquiries[0].EnquiryTime</td>*@
+                                            @*<td class="hidden">@Model.Enquiries[0].JobID</td>
+                                                                                        <td>@Model.Enquiries[0].Job.JobName</td>
+                                                                                       <td class="hidden">@Model.Enquiries[0].CustomerID</td>
+                                                <td>@Model.Enquiries[0].CustomerName</td>
+                                                <td>@Model.Enquiries[0].FunctionDate</td>*@
+                                            <td>@Model.Enquiries[i].EnquiryDate.ToString("dd/MM/yyyy")</td>
+                                            <td>@Model.Enquiries[i].EnquiryTime.ToString("hh':'mm")</td>
+                                            <td>@Model.Enquiries[i].FunctionDate.ToString("dd/MM/yyyy")</td>
+                                            <td class="hidden">@Model.Enquiries[i].CustomerID</td>
+                                            <td>@Model.Enquiries[i].Customer.CustomerName</td>
+                                            <td class="hidden">@Model.Enquiries[i].EnquiryStatusID</td>
+                                            <td>@Model.Enquiries[i].EnquiryStatus.EnquiryStatusName</td>
+                                            <td class="hidden">@Model.Enquiries[i].EnquiryTypeID</td>
+                                            <td>@Model.Enquiries[i].EnquiryType.EnquiryTypeName</td>
+                                            @*<td>@Model.Enquiries[0].Remarks</td>*@
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+
+<div id="mdlCreateSkill" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Skill</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_Skill.cshtml", Model.Skills)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createSkill()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="mdlCreateDevice" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Device</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_Device.cshtml", Model.Devices)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createDevice()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="mdlCreateCustomer" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Customer</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_Customer.cshtml", Model.CustomerModel)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createCustomer()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="mdlCreateEnquiryStatus" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Enquiry Status</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_EnquiryStatus.cshtml", Model.EnquiryStatus)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createEnquiryStatus()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="mdlCreateEnquiryType" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background:#222d32;color:white;">
+                <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+                <h4 class="modal-title">Add Enquiry Type</h4>
+            </div>
+            <div class="modal-body">
+                @Html.Partial("~/Views/Shared/_EnquiryType.cshtml", Model.EnquiryTypes)
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="createEnquiryType()">Create</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function dateChange() {
+        if ($('#txtEnquiryDate').val() != '' && $('#txtFunctionDate').val() != '') {
+            var _functionDate = new Date($('#txtFunctionDate').val());
+            var _enquiryDate = new Date($('#txtEnquiryDate').val());
+            if (_functionDate.getTime() < _enquiryDate.getTime()) {
+                $('#txtEnquiryDate').val($('#txtFunctionDate').val());
+                _utility.showNotification('Warning', 'warning', "Enquiry Date can't be greater than Function Date");
+            }
+        }
+    }
+    function costchange() {
+        if ($('#txtMinCost').val() != '' && $('#txtMaxCost').val() != '' && $('#txtMinCost').val() != '0' && $('#txtMaxCost').val() != '0') {
+            if (parseFloat($('#txtMinCost').val()) > parseFloat($('#txtMaxCost').val())) {
+                $('#txtMinCost').val(parseFloat($('#txtMaxCost').val()));
+                _utility.showNotification('Warning', 'warning', "Min Cost can't be greater than Max Cost");
+            }
+            if ($('#txtChargeableCost').val() != '' && $('#txtChargeableCost').val() != '0') {
+                if (parseFloat($('#txtChargeableCost').val()) > parseFloat($('#txtMaxCost').val())) {
+                    $('#txtChargeableCost').val(parseFloat($('#txtMaxCost').val()));
+                    _utility.showNotification('Warning', 'warning', "Chargeable Cost can't be greater than Max Cost");
+                }
+                else if (parseFloat($('#txtChargeableCost').val()) < parseFloat($('#txtMinCost').val())) {
+                    $('#txtChargeableCost').val(parseFloat($('#txtMinCost').val()));
+                    _utility.showNotification('Warning', 'warning', "Chargeable Cost can't be lesser than Min Cost");
+                }
+            }
+        }
+    }
+    function createEnquiry() {
+        if (checkLists()) {
+            if (addDeviceOjbect()) {
+                if (addSkillOjbect('tblEnquirySkill')) {
+                    create('Enquiry');
+                }
+            }
+        }
+    }
+    function updateEnquiry() {
+        if (checkLists()) {
+            if (addDeviceOjbect()) {
+                if (addSkillOjbect('tblEnquirySkill')) {
+                    update('Enquiry');
+                }
+            }
+        }
+    }
+    function checkLists(){
+        //if ($('#lstDevice li').length == 0) {
+        //    _utility.showNotification('Warning', 'warning', "Device is not selected");
+        //    return false;
+        //}
+        //if ($('#lstSkill li').length == 0) {
+        //    _utility.showNotification('Warning', 'warning', "Skill is not selected");
+        //    return false;
+        //}
+        //if ($('#lstJob li').length == 0) {
+        //    _utility.showNotification('Warning', 'warning', "Job is not selected");
+        //    return false;
+        //}
+        //if ($('#lstFunctionType li').length == 0) {
+        //    _utility.showNotification('Warning', 'warning', "Function Type is not selected");
+        //    return false;
+        //}
+        return true;
+    }
+    function checkDeviceAvailability() {
+        var valid = true;
+        $('#frmEnquiryDevice .input-group').removeClass('border-red')
+        $('#frmEnquiryDevice *:required, #frmEnquiryDevice ul.dropdown-menu').each(function (e) {
+            var _elm = $(this);
+            var val = $.trim(_elm.val());
+            if (_elm.is('ul') && (_elm.hasClass('multiple') == false)) {
+                var _hiddenElement = $('#hdn' + _elm.attr('id').replace('drp', '') + 'ID');
+                if (_hiddenElement.val() == '' || _hiddenElement.val() == '0' || _hiddenElement.val() == undefined) {
+                    valid = false;
+                    _elm.parents('.input-group').addClass('border-red');
+                }
+            }
+            else if ((val == '' || val == undefined || _elm.is(':invalid')) && _elm.is(':not(ul)')) {
+                valid = false;
+                _elm.parents('.input-group').addClass('border-red');
+            }
+        });
+        if (valid) {
+            var _hiredCost = $('#txtHiredCost').val();
+            var _devieID = $('#hdnDeviceID').val();
+            var _device = $('#drpDevice li[data-id=' + _devieID + ']');
+            var _devieQuantity = _device.data('quantity');
+            var _isHired = $('#chkIsHiredDevice').prop('checked');
+            var _devieName = _device.data('name');
+            var _quantity = parseInt($('#txtQuantity').val());
+            var _fromDate = $('#txtToDate').val();
+            var _toDate = $('#txtFromDate').val();
+            var _currentQuantity = 0;
+            $('#tblEnquiryDevice tbody tr').each(function () {
+                if ($(this).data('id') == _devieID) {
+                    _currentQuantity += parseInt($(this).data('quantity'));
+                }
+            });
+            var _available = false;
+            if(_isHired == false){
+                var data = {
+                    'DeviceID': _devieID, 'FromDate': _fromDate, 'ToDate': _toDate, 'Quantity': (_currentQuantity + _quantity),
+                    'DeviceQuantity': _devieQuantity, 'CurrentQuantity': _currentQuantity
+                 , 'ProjectStartDate': $('#txtFunctionDate').val(), 'ProjectEndDate': $('#txtFunctionDate').val()
+                };
+                var _result = _service.GET('../Project/CheckDeviceAvailability', data, 'JSON');
+                var _msg = '';
+                if (_result.isQuantityAvailable == false) {
+                    _msg += 'Selected Quantity is not available \n';
+                    _msg += 'Available  Quantity is : '+_result.quantityAvailable+' \n';
+                    $('#txtQuantity').val(_result.quantityAvailable);
+                }
+                if (_result.isDateAvailable == false) {
+                    _msg += "Device isn't available on the selected dates!\n";
+                    if (_result.avaiableDates.length > 0) {
+                        _msg += "Available Dates are \n";
+                        var _availableDates =_result.avaiableDates;
+                        for (var i = 0; i < _availableDates.length; i++) {
+                            _msg +=   (i + 1) + ' - ' + _availableDates[i].split('T')[0] + '\n';
+                        }
+                    }
+
+                }
+                if (_result.isQuantityAvailable != false && _result.isDateAvailable != false) {
+                    //if ($('#tblProjectDevice tbody tr td').length == 1) {
+                    //    $('#tblProjectDevice tbody tr').remove()
+                    //}
+                    _available = true;
+                }
+            }
+
+            if(_available == true || _isHired == true){
+                var _tr = '<tr  data-deviceid="' + _devieID + '" data-todate="' + _toDate + '" data-id=' + _devieID +
+                    ' data-quantity="' + _quantity + '"  data-devicename="' + _devieName +
+                    '" data-fromdate="' + _fromDate + '"  data-ishired="' + _isHired + '" data-hiredcost="' + _hiredCost + '"> ' +
+                 '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                 'onclick="deleteRow(\'tblEnquiryDevice\',this);" /></td>'
+                 + '<td>' + _devieName + '</td>'
+                 + '<td>' + _fromDate + '</td>'
+                 + '<td>' + _toDate + '</td>'
+                 + '<td>' + _isHired + '</td>'
+                 + '<td>' + _hiredCost + '</td>'
+                 + '<td>' + _quantity + '</td></tr>';
+                $('#tblEnquiryDevice tbody:eq(0)').append(_tr);
+                $('#txtFromDate').val('');
+                $('#hdnDeviceID').val('');
+                $('#txtToDate').val('');
+                $('#chkIsHiredDevice').prop('checked',false);
+                $('.dropdown #DeviceName').text('Select Device');
+                $('#txtQuantity').val('');
+                $('#txtHiredCost').val('');
+            }
+            if (_msg != '' && _msg != undefined) {
+                _utility.showNotification('Warning', "warning", _msg);
+            }
+        }
+        else {
+            _utility.showNotification('Warning', 'warning', 'Validation Failed!');
+        }
+    }
+    function checkSkillAvailability() {
+        var valid = true;
+        $('#frmEnquirySkill *:required, #frmEnquirySkill ul.dropdown-menu').each(function (e) {
+            var _elm = $(this);
+            var val = $.trim(_elm.val());
+            if (_elm.is('ul') && (_elm.hasClass('multiple') == false) && !_elm.hasClass('not-required')) {
+                var _hiddenElement = $('#hdn' + _elm.attr('id').replace('drp', '') + 'ID');
+                if (_hiddenElement.val() == '' || _hiddenElement.val() == '0' || _hiddenElement.val() == undefined) {
+                    valid = false;
+                    _elm.parents('.input-group').addClass('border-red');
+                }
+            }
+            else if ((val == '' || val == undefined || _elm.is(':invalid')) && _elm.is(':not(ul)')) {
+                valid = false;
+                _elm.parents('.input-group').addClass('border-red');
+            }
+        });
+        if (valid) {
+            var _hiredCost = $('#txtHiredCostSkill').val();
+            var _skillID = $('#hdnSkillID').val();
+            var _skill = $('#drpSkill li[data-id=' + _skillID + ']');
+            var _skillQuantity = _skill.data('quantity');
+            var _isHired = $('#chkIsHiredSkill').prop('checked');
+            var _skillName = _skill.data('name');
+            var _quantity = parseInt($('#txtQuantitySkill').val());
+
+            var _tr = '<tr  data-skillid="' + _skillID + '" data-id=' + _skillID +
+                    '" data-quantity="' + _quantity + '"  data-skillname="' + _skillName +
+                    '" data-ishired="' + _isHired + '" data-hiredcost="' + _hiredCost + '"> ' +
+                 '<td><input type="button" class="btn btn-sm btn-danger" value="Delete" ' +
+                 'onclick="deleteRow(\'tblEnquirySkill\',this);" /></td>'
+                 + '<td>' + _skillName + '</td>'
+                 + '<td>' + _isHired + '</td>'
+                 + '<td>' + _hiredCost + '</td>'
+                 + '<td>' + _quantity + '</td></tr>';
+                $('#tblEnquirySkill tbody:eq(0)').append(_tr);
+                $('#hdnSkillID').val('');
+                $('#chkIsHiredSkill').prop('checked',false);
+                $('.dropdown #SkillName').text('Select Skill');
+                $('#txtQuantitySkill').val('');
+                $('#txtHiredCostSkill').val('');
+        }
+        else {
+            _utility.showNotification('Warning', 'warning', 'Validation Failed!');
+        }
+    }
+    function addDeviceOjbect() {
+        var _trs = $('#tblEnquiryDevice tbody tr');
+        if (_trs.length > 0) {
+            var _enquiryDevices = new Array();
+            _trs.each(function () {
+                var _tr = $(this);
+                var _hiredCost = _tr.data('hiredcost');
+                if(_hiredCost == '' || _hiredCost == undefined){
+                    _hiredCost = 0;
+                }
+                _enquiryDevices.push({
+                    'DeviceID': _tr.data('deviceid'),
+                    'Quantity': _tr.data('quantity'),
+                    'IsHired': _tr.data('ishired'),
+                    'HiredCost': 0,
+                    'ToDate': _tr.data('todate'),
+                    'FromDate': _tr.data('fromdate'),
+                });
+            });
+            $('#hdnEnquiryDevices').val(JSON.stringify(_enquiryDevices));
+
+        }
+        return true;
+        //else {
+        //    event.stopPropagation();
+        //    _utility.showNotification('Error', 'error', 'Device Not Selected!');
+        //    return false;
+        //}
+    }
+    function createCustomer() {
+        if (_utility.validateForm('frmCustomer')) {
+            var data = _utility.getFormParameters('frmCustomer');
+            var dataa = { 'Entity': 'Customer', 'Name': data['CustomerName'] };
+            //var dataa = { 'Entity': entity, 'Name': nameExist.data('name'), 'PropertyID': nameExist.data('propertyID'), 'ProertyName': nameExist.data('propertyname'), 'ID': nameExist.data('id') }
+            if (_service.GET('../Common/IsNameExists', dataa, 'JSON')) {
+                _utility.showNotification('Warning', 'warning', 'Same Name Record Already Exists!');
+            }
+            else {
+                var _result = _service.GET('../Enquiry/CreateCustomer', data, 'JSON');
+                if (_result.customers) {
+                        $('#drpCustomer li:not(:first)').remove();
+                        for (var i = 0; i < _result.customers.length; i++) {
+                            $('#drpCustomer').append(
+                            '<li data-name="' + _result.customers[i].CustomerName + '" data-id="' + _result.customers[i].CustomerID + '">'
+                                + '<a href="javascript:void(0)" onclick="setItem(\'"Customer"\',' + _result.customers[i].CustomerID + ',"' + _result.customers[i].CustomerName + '");">'
+                                    + _result.customers[i].CustomerName + '</a>' +
+                            '</li>');
+                        }
+                        _utility.showNotification('Success', 'success', 'Record Successfully saved!');
+                        $('#mdlCreateCustomer').modal('hide');
+                        $('#CustomerName').text(data['CustomerName']);
+                        $('#hdnCustomerID').val(_result.customerid);
+                    }
+            }
+        }
+    }
+    function createEnquiryStatus() {
+        if (_utility.validateForm('frmEnquiryStatus')) {
+            var data = _utility.getFormParameters('frmEnquiryStatus');
+            var dataa = { 'Entity': 'EnquiryStatus', 'Name': data['EnquiryStatusName'] };
+            //var dataa = { 'Entity': entity, 'Name': nameExist.data('name'), 'PropertyID': nameExist.data('propertyID'), 'ProertyName': nameExist.data('propertyname'), 'ID': nameExist.data('id') }
+            if (_service.GET('../Common/IsNameExists', dataa, 'JSON')) {
+                _utility.showNotification('Warning', 'warning', 'Same Name Record Already Exists!');
+            }
+            else {
+                var _result = _service.GET('../Enquiry/CreateEnquiryStatus', data, 'JSON');
+                if (_result.enquiryStatus) {
+                        $('#drpEnquiryStatus li:not(:first)').remove();
+                        for (var i = 0; i < _result.enquiryStatus.length; i++) {
+                            $('#drpEnquiryStatus').append(
+                            '<li data-name="' + _result.enquiryStatus[i].EnquiryStatusName + '" data-id="' + _result.enquiryStatus[i].EnquiryStatusID + '">'
+                                + '<a href="javascript:void(0)" onclick="setItem(\'EnquiryStatus\',' + _result.enquiryStatus[i].EnquiryStatusID + ',"' + _result.enquiryStatus[i].EnquiryStatusName + '");">'
+                                    + _result.enquiryStatus[i].EnquiryStatusName + '</a>' +
+                            '</li>');
+                        }
+                        _utility.showNotification('Success', 'success', 'Record Successfully saved!');
+                        $('#mdlCreateEnquiryStatus').modal('hide');
+                        $('#EnquiryStatusName').text(data['EnquiryStatusName']);
+                        $('#hdnEnquiryStatusID').val(_result.enquirystatusid);
+                    }
+            }
+        }
+    }
+    function createEnquiryType() {
+        if (_utility.validateForm('frmEnquiryType')) {
+            var data = _utility.getFormParameters('frmEnquiryType');
+            var dataa = { 'Entity': 'EnquiryType', 'Name': data['EnquiryTypeName'] };
+            //var dataa = { 'Entity': entity, 'Name': nameExist.data('name'), 'PropertyID': nameExist.data('propertyID'), 'ProertyName': nameExist.data('propertyname'), 'ID': nameExist.data('id') }
+            if (_service.GET('../Common/IsNameExists', dataa, 'JSON')) {
+                _utility.showNotification('Warning', 'warning', 'Same Name Record Already Exists!');
+            }
+            else {
+                var _result = _service.GET('../Enquiry/CreateEnquiryType', data, 'JSON');
+                if (_result.enquiryType) {
+                    $('#drpEnquiryType li:not(:first)').remove();
+                    for (var i = 0; i < _result.enquiryType.length; i++) {
+                        $('#drpEnquiryType').append(
+                        '<li data-name="' + _result.enquiryType[i].EnquiryTypeName + '" data-id="' + _result.enquiryType[i].EnquiryTypeID + '">'
+                            + '<a href="javascript:void(0)" onclick="setItem(\'EnquiryType\',' + _result.enquiryType[i].EnquiryTypeID + ',"' + _result.enquiryType[i].EnquiryTypeName + '");">'
+                                + _result.enquiryType[i].EnquiryTypeName + '</a>' +
+                        '</li>');
+                    }
+                    _utility.showNotification('Success', 'success', 'Record Successfully saved!');
+                    $('#mdlCreateEnquiryType').modal('hide');
+                    $('#EnquiryTypeName').text(data['EnquiryTypeName']);
+                    $('#hdnEnquiryTypeID').val(_result.enquirytypeid);
+                }
+            }
+        }
+    }
+    
+    
+</script>
+
+

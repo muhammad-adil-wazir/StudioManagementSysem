@@ -1,0 +1,89 @@
+﻿@model List<SMS.DataContext.Entities.ProjectStatus>
+@{
+    ViewBag.Title = "Project Status";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Project Status Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmProjectStatus">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="ProjectStatusID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-user"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" placeholder="Name" name="ProjectStatusName">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateProjectStatus" onclick="create('ProjectStatus','Project/ProjectStatusCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditProjectStatus" onclick="update('ProjectStatus', 'Project/ProjectStatusEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearProjectStatus"
+                                       onclick="clearForm('ProjectStatus');" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="email" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Projects Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblProjectStatus">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Project Status ID</th>
+                                    <th>Project Status Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('ProjectStatus','../Project/ProjectStatusDelete','@Model[i].ProjectStatusID','@Model[i].ProjectStatusName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('ProjectStatus',this)">Edit</a> </td>
+                                            <td class="hidden" id="ProjectStatusID">@Model[i].ProjectStatusID</td>
+                                            <td id="ProjectStatusName">@Model[i].ProjectStatusName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+

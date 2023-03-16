@@ -1,0 +1,129 @@
+﻿@model List<SMS.DataContext.Entities.Device>
+<form class="form-horizontal" id="frmDevice">
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="hidden" name="DeviceID" />
+            <div class="form-group">
+                <label class="col-md-2 control-label">Name</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-plug"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="DeviceName" placeholder="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Display</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-paperclip"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Display" placeholder="Display" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Recorder</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-paperclip"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Recorder" placeholder="Recorder" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Media</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-paperclip"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Media" placeholder="Media" required>
+                    </div>
+                </div>
+            </div>
+         
+            <input type="button" class="btn btn-success" id="btnCreateDevice" onclick="create('Device', '', true)" value="Create" />
+            <input type="button" class="btn btn-primary hidden" onclick="update('Device','',true)" id="btnEditDevice" value="Update" />
+            <input type="button" class="btn btn-info" id="btnClearDevice"
+                   onclick="clearForm('Device');" value="Clear" />
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Video</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-file-video-o"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Video" placeholder="Video" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Audio</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-file-audio-o"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Audio" placeholder="Audio" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Power</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-power-off"></i>
+                        </span>
+                        <input type="text" class="form-control1" name="Power" placeholder="Power" required>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">Quantity</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-paperclip"></i>
+                        </span>
+                        <input type="number" class="form-control1" min="1" name="Quantity" placeholder="Quantity" required>
+                    </div>
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-md-2 control-label">IsHired</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-paperclip"></i>
+                        </span>
+                        <select class="form-control selectpicker" name="IsHired" id="drpIsHired" data-live-search="true">
+                            <option data-tokens="select-isHired" value="0">Select IsHired</option>
+                            <option data-tokens="Active" value="True">Yes</option>
+                            <option data-tokens="InActive" selected="selected" value="False">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>*@
+            <div class="form-group">
+                <label class="col-md-2 control-label">Remarks</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <textarea id="" name="Remarks" class="form-control" type="text" placeholder="Remarks"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

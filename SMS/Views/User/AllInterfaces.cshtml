@@ -1,0 +1,146 @@
+﻿@model List<SMS.DataContext.Entities.Interface>
+@{
+    ViewBag.Title = "Interface";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Interface Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmInterface">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="InterfaceID" />
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">Name</label>
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-desktop"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="InterfaceName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateInterface" onclick="create('Interface', 'User/InterfaceCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditInterface" onclick="update('Interface', 'User/InterfaceEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearInterface"
+                                       onclick="clearForm('Interface');" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Parent Interface</label>
+                                    <input type="hidden" id="hdnParentInterfaceID" name="ParentInterfaceID" />
+                                    <div class="col-lg-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-desktop"></i>
+                                            </span>
+                                            <div class="dropdown dropdown-scroll">
+
+                                                <button class="btn btn-default border-left-zero dropdown-toggle col-lg-12" type="button" data-toggle="dropdown">
+                                                    <span name="ParentInterfaceName" id="ParentInterfaceName">Select Parent Interface</span>
+                                                    <span class="float-right">
+                                                        <span class="caret"></span>
+                                                    </span>
+                                                </button>
+                                                <ul class="dropdown-menu col-lg-12 multiple" id="drpParentInterface" role="menu" aria-labelledby="dropdownMenu1" placeholdertext="Select Parent Interface">
+                                                    <li role="presentation">
+                                                        <div class="input-group input-group-sm search-control">
+                                                            <span class="input-group-addon">
+                                                                <span class="glyphicon glyphicon-search"></span>
+                                                            </span>
+                                                            <input type="text" class="form-control" placeholder="ParentInterface" />
+                                                        </div>
+                                                    </li>
+                                                    @{
+                                                        var _parentInterfaces = Model.Where(x => x.ParentInterfaceID == null).ToList();
+                                                        if (_parentInterfaces != null)
+                                                        {
+                                                            for (int i = 0; i < _parentInterfaces.Count; i++)
+                                                            {
+
+                                                                <li data-name="@_parentInterfaces[i].InterfaceName" data-id="@_parentInterfaces[i].InterfaceID">
+                                                                    <a href="javascript:void(0)" onclick="setItem('ParentInterface',@_parentInterfaces[i].InterfaceID,'@_parentInterfaces[i].InterfaceName');">
+                                                                        @_parentInterfaces[i].InterfaceName
+                                                                    </a>
+                                                                </li>
+                                                            }
+                                                        }
+                                                    }
+                                                    
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Interfaces Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblInterface">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Interface ID</th>
+                                    <th>Interface Name</th>
+                                    <th class="hidden">Parent Interface ID</th>
+                                    <th>Parent Interface</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Role', '../User/InterfaceDelete','@Model[i].InterfaceID','@Model[i].InterfaceName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Interface',this)">Edit</a> </td>
+                                            <td id="InterfaceID" class="hidden">@Model[i].InterfaceID</td>
+                                            <td id="InterfaceName">@Model[i].InterfaceName</td>
+                                            <td id="ParentInterfaceID" class="hidden">@Model[i].ParentInterfaceID</td>
+                                            @{
+                                                var _parentInterfaceName = "";
+                                                if(Model[i].ParentInterfaceID != null)
+                                                {
+                                                    _parentInterfaceName = Model[i].ParentInterface.InterfaceName;
+                                                }
+                                                    <td id="ParentInterfaceName">@_parentInterfaceName</td>
+                                            }
+                                            
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

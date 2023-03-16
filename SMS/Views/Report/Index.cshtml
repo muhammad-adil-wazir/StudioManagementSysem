@@ -1,0 +1,68 @@
+﻿<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Report</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmReport">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <input type="hidden" name="ReportName" value="@TempData["ReportName"]" />
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">Start Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-product-hunt"></i>
+                                            </span>
+                                            <input required type="date" class="form-control1" placeholder="Start Date" id="txtStartDate" name="StartDate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnGenerateReport" onclick="showReport()" value="Generate" />
+
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">End Date</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-product-hunt"></i>
+                                            </span>
+                                            <input required type="date" class="form-control1" placeholder="End Date" name="EndDate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                @{
+                                    if (Request.Url.ToString().ToLower().Contains("contract"))
+                                    {
+                                        <div class="form-group">
+                                            <label class="col-md-4 padding-0 control-label">Contract Number</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
+                                                        <i class="fa fa-product-hunt"></i>
+                                                    </span>
+                                                    <input required type="text" class="form-control1" placeholder="Contract Number" name="ContractNumber" value="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+               
+            </div>
+
+        </div>
+    </div>
+</div>

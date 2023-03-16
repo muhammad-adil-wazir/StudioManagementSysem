@@ -1,0 +1,89 @@
+﻿@model List<SMS.DataContext.Entities.FunctionType>
+@{
+    ViewBag.Title = "Function Type";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Function Type Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmFunctionType">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="FunctionTypeID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-tag"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="FunctionTypeName" placeholder="Name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateFunctionType" onclick="create('FunctionType','Function/FunctionTypeCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditFunctionType" onclick="update('FunctionType','Function/FunctionTypeEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearFunctionType"
+                                       onclick="clearForm('FunctionType')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="email" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Function Types Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table id="tblFunctionType" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">ID</th>
+                                    <th>Function Type Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('FunctionType','../Function/FunctionTypeDelete','@Model[i].FunctionTypeID','@Model[i].FunctionTypeName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('FunctionType',this)">Edit</a> </td>
+                                            <td id="FunctionTypeID" class="hidden">@Model[i].FunctionTypeID</td>
+                                            <td id="FunctionTypeName">@Model[i].FunctionTypeName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+

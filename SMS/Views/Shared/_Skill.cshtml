@@ -1,0 +1,36 @@
+﻿@model List<SMS.DataContext.Entities.Skill>
+<form class="form-horizontal" id="frmSkill">
+    <div class="row">
+        <div class="col-lg-6">
+            <input type="hidden" name="SkillID" />
+            <div class="form-group">
+                <label class="col-md-2 control-label">Name</label>
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-subscript"></i>
+                        </span>
+                        <input type="text" class="form-control1" required name="SkillName" placeholder="Name">
+                    </div>
+                </div>
+            </div>
+            <input type="button" class="btn btn-success" id="btnCreateSkill" onclick="create('Skill','',true)" value="Create" />
+            <input type="button" class="btn btn-primary hidden" id="btnEditSkill" onclick="update('Skill','',true)" value="Update" />
+            <input type="button" class="btn btn-info" id="btnClearSkill"
+                   onclick="clearForm('Skill')" value="Clear" />
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label class="col-md-2 control-label">Remarks</label>
+                <div class="col-md-8">
+                    <div class="input-group input-icon right">
+                        <span class="input-group-addon">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <textarea id="email" class="form-control" type="text" placeholder="Remarks" name="Remarks"> </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

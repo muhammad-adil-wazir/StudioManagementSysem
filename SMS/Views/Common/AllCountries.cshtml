@@ -1,0 +1,112 @@
+﻿@model List<SMS.DataContext.Entities.Country>
+@{
+    ViewBag.Title = "Country";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Country Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmCountry">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="CountryID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-area-chart"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="CountryName" placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Short Form</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-minus-square"></i>
+                                            </span>
+                                            <input required type="text" class="form-control1" name="ShortForm" placeholder="Short Form">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateCountry" onclick="create('Country','Common/CountryCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditCountry" onclick="update('Country','Common/CountryEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearCountry"
+                                       onclick="clearForm('Country')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Currency</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-dollar"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="Currency" required placeholder="Currency">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Countries Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblCountry">
+                            <thead>
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Country ID</th>
+                                    <th>Country Name</th>
+                                    <th>Short Form</th>
+                                    <th>Currency</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Country','../Common/CountryDelete','@Model[i].CountryID','@Model[i].CountryName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Country',this)">Edit</a> </td>
+                                            <td id="CountryID" class="hidden">@Model[i].CountryID</td>
+                                            <td id="CountryName">@Model[i].CountryName</td>
+                                            <td id="ShortForm">@Model[i].ShortForm</td>
+                                            <td id="Currency">@Model[i].Currency</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

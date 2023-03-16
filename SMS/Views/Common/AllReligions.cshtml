@@ -1,0 +1,87 @@
+﻿@model List<SMS.DataContext.Entities.Religion>
+@{
+    ViewBag.Title = "Religion";
+}
+<div id="page-wrapper" style="min-height: 390px;">
+    <div class="main-page">
+        <div class="forms">
+            <div class="form-three widget-shadow" style="padding:0px;">
+                <div class="form-title">
+                    <h4>Religion Management</h4>
+                </div>
+                <div class="panel-body-inputin" style="padding:10px 0px 0px 0px;">
+                    <form class="form-horizontal" id="frmReligion">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <input type="hidden" name="ReligionID" />
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Name</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-chevron-right"></i>
+                                            </span>
+                                            <input type="text" class="form-control1" name="ReligionName" required placeholder="Name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="button" class="btn btn-success" id="btnCreateReligion" onclick="create('Religion','Common/ReligionCreate',true)" value="Create" />
+                                <input type="button" class="btn btn-primary hidden" id="btnEditReligion" onclick="update('Religion','Common/ReligionEdit',true)" value="Update" />
+                                <input type="button" class="btn btn-info" id="btnClearReligion"
+                                       onclick="clearForm('Religion')" value="Clear" />
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label">Remarks</label>
+                                    <div class="col-md-8">
+                                        <div class="input-group input-icon right">
+                                            <span class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </span>
+                                            <textarea id="" class="form-control" type="text" placeholder="Remarks" name="Remarks"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="form-title">
+                    <h4>Religions Detail</h4>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <table class="table table-bordered table-striped" id="tblReligion">
+                            <thead>
+
+                                <tr>
+                                    <th>Action</th>
+                                    <th class="hidden">Religion ID</th>
+                                    <th>Religion Name</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null)
+                                {
+                                    for (int i = 0; i < Model.Count; i++)
+                                    {
+                                        <tr>
+                                            <td><a href="javascript:void(0);" onclick="deleteDialog('Religion','../Common/ReligionDelete','@Model[i].ReligionID','@Model[i].ReligionName')" class="btn btn-sm btn-danger">Delete</a> <a class="btn btn-sm btn-primary" href="javascript:void(0);" onclick="edit('Religion',this)">Edit</a> </td>
+                                            <td id="ReligionID" class="hidden">@Model[i].ReligionID</td>
+                                            <td id="ReligionName">@Model[i].ReligionName</td>
+                                            <td id="Remarks">@Model[i].Remarks</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
